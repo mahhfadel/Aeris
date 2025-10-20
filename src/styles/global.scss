@@ -1,0 +1,35 @@
+@use './variables' as *;
+@use './mixins' as *;
+@import url('https://fonts.googleapis.com/css2?family=Aclonica&family=Advent+Pro:ital,wght@0,100..900;1,100..900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    font-family: "Advent Pro", sans-serif;
+    background-color: $white;
+}
+
+.aclonica-regular {
+  font-family: "Aclonica", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+
+.advent-pro-uniquifier {
+  font-family: "Advent Pro", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
+}
+
+
+body {
+    margin: 0;
+    font-family: "Advent Pro", sans-serif;
+    font-weight: 400;
+}

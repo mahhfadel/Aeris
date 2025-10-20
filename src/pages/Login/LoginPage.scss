@@ -1,0 +1,108 @@
+@use "@/styles/variables.scss" as *;
+
+.container-body {
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  height: 100vh;
+  width: 100%;
+  color: white;
+
+  .container-logo {
+    width: 50%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #AC4A00, #006172);
+    padding: 4rem;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  }
+
+  .container-form{
+    width: 50%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10rem;
+    color: $blue;
+
+    .login-form{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+
+      .input-label{
+        font-family: "Advent Pro", sans-serif;
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: $blue;
+      
+      }
+
+      .input{
+        font-family: "Advent Pro", sans-serif;
+        font-size: 1.2rem;
+        font-weight: 500;
+        color: $blue;
+        border: 1.6px solid $blue;
+        border-radius: 8px;
+
+        &::placeholder {
+          color: $blue;
+          opacity: 0.6;
+        }
+      }
+
+      .button{
+        font-family: "Advent Pro", sans-serif;
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-top: 20px;
+        background-color: $blue;
+        border-radius: 8px;
+        color: $white;
+
+      }
+
+      .navegation-text {
+        font-family: "Advent Pro", sans-serif;
+        font-size: 1rem;
+        font-weight: 500;
+        margin-top: 8px;
+        color: $blue;
+      }
+
+      .pin-input input {
+        border: 2px solid $blue;   
+        color: $blue;              
+        background-color: #F2F2F2;  
+        border-radius: 8px;
+        font-size: 1.5rem;
+        font-weight: 600;
+        transition: 0.2s;
+
+      &:focus {
+        border-color: $orange;
+        box-shadow: 0 0 5px rgba(172, 74, 0, 0.4);
+      }
+}
+
+    }
+
+    h2{
+      font-family: "Aclonica", sans-serif;
+      font-weight: 500;
+      font-style: normal;
+      font-size: 56px;
+      color: $blue;
+      text-align: center; 
+      line-height: 1;
+    }
+  }
+}

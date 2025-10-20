@@ -1,0 +1,90 @@
+@use "@/styles/variables.scss" as *;
+
+.expandable {
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 24px;
+
+  .expandable-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    background-color:#E8E8E8;
+    cursor: pointer;
+
+    .title-header{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 8px;
+    }
+
+
+    h3 {
+      font-family: "Aclonica", sans-serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: $blue;
+      margin: 0;
+    }
+
+    .arrow {
+      width: 24px;
+      height: 24px;
+      color: $blue;
+      transition: transform 0.3s ease;
+
+      &.expanded {
+        transform: rotate(180deg);
+      }
+    }
+
+    .btn-nova-pesquisa {
+        display: flex;
+        align-items: center;
+        background: $blue;
+        padding: 0px 20px;
+        border-radius: 0;
+        border: none;
+        color: $white;
+        font-weight: 500;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border-radius: 8px;
+        opacity: 1;
+
+        &.invisible {
+          opacity: 0;
+        }
+
+        &:hover {
+            
+            background-color: rgba(0, 41, 48, 0.85);
+        }
+
+        svg {
+            color: $white;
+        }
+    }
+  }
+
+  .expandable-content {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+
+    &.expanded {
+      max-height: 1000px;
+      opacity: 1;
+    }
+
+    .expandable-body {
+      padding: 0px 16px 16px 16px;
+      background-color: #E8E8E8;
+    }
+  }
+}

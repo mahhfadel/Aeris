@@ -1,0 +1,44 @@
+@use "@/styles/variables.scss" as *;
+
+.header-pesquisas{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    flex-shrink: 0;
+
+    h2{
+        font-family: "Aclonica", sans-serif;
+        font-weight: 500;
+        font-style: normal;
+        font-size: 36px;
+        color: $orange;
+        text-align: left; 
+        line-height: 1;
+    }
+}
+
+
+.pesquisas-content {
+    flex: 1;
+    overflow-y: auto;
+    margin-top: 1rem;
+    padding-right: 0.5rem;
+
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: $orange;
+        border-radius: 10px;
+    }   
+
+    &::-webkit-scrollbar-thumb:hover {
+        background-color: black;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+}

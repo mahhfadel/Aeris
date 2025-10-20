@@ -1,0 +1,48 @@
+@use "@/styles/variables.scss" as *;
+
+.pesquisa-card {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    color: $black;
+    background: transparent;
+    padding: 8px;
+    cursor: default;
+    border-bottom: 1px solid $black;
+
+    .pesquisa-info{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+
+        .pesquisa-nome{
+            font-family: "Aclonica", sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .pesquisa-data{
+            font-size: 16px;
+            font-weight: 500;
+        }
+    }
+
+    .respostas{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        .resposta-title{
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .resposta-data{
+            font-size: 16px;
+            font-weight: 600;
+        }
+    }
+}
