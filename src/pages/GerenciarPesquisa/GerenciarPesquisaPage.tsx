@@ -182,7 +182,7 @@ const UsuariosPage = () => {
             >
                 <div className="popup">
                     <div className="popup-top">
-                        <h2>Novo colaborador</h2>
+                        <h2>Adicionar colaborador</h2>
                         
                         <InputGroup startElement={<MdOutlineSearch />} className='input'>
                             <Input placeholder="Pesquisar colaborador" />

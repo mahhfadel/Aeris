@@ -25,7 +25,7 @@ const UsuariosPage = () => {
 
     return (
         <Pagecontainer>
-            <div className="header">
+            <div className="header-usuarios">
                 <h2 className="page-title">Usuários</h2>
                 <Button className='btn-novo-colaborador' onClick={() => setIsPopupOpen(true)}>
                     <MdOutlineAdd />
