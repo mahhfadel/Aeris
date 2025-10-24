@@ -33,6 +33,7 @@
     justify-content: right;
     z-index: 1;
     margin-bottom: 4px;
+    flex-shrink: 0;
 }
 
 .close-btn {
@@ -51,8 +52,10 @@
 .popup-body {
     flex: 1;
     overflow-y: auto;
+    overflow-x: hidden;
     display: flex;
     flex-direction: column;
+    min-height: 0;
 }
 
 @keyframes fadeIn {

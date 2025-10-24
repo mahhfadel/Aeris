@@ -93,29 +93,95 @@
         }
     }
 
-    .table-popup {
-        flex: 1;
-        overflow-y: auto;
-        margin-top: 1rem;
-        padding-right: 0.5rem;
+    .add-pergunta-form{
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 0.5rem;
 
-        &::-webkit-scrollbar {
-        width: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    &::-webkit-scrollbar {
+    width: 8px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: $blue;
+        border-radius: 10px;
+    }   
+
+    &::-webkit-scrollbar-thumb:hover {
+        background-color: black;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .input-label{
+        font-family: "Advent Pro", sans-serif;
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: $blue;
+      
+      }
+
+      .input{
+        font-family: "Advent Pro", sans-serif;
+        font-size: 1.2rem;
+        font-weight: 500;
+        color: $blue;
+        border: 1.6px solid $blue;
+        border-radius: 8px;
+
+        &::placeholder {
+          color: $blue;
+          opacity: 0.6;
         }
 
-        &::-webkit-scrollbar-thumb {
-            background-color: $orange;
-            border-radius: 10px;
-        }   
+    }
 
-        &::-webkit-scrollbar-thumb:hover {
-            background-color: black;
+    .input-container {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+
+        .input-label {
+            font-family: "Advent Pro", sans-serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: $blue;
         }
 
-        &::-webkit-scrollbar-track {
-            background: transparent;
+        .input {
+            font-family: "Advent Pro", sans-serif;
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: $blue;
+            border: 1.6px solid $blue;
+            border-radius: 8px;
+            padding: 10px 12px;
+            background-color: $white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+
+
+            &:focus {
+                outline: none;
+                border-color: $blue;
+                box-shadow: 0 0 0 3px rgba($blue, 0.1);
+            }
+
+            option {
+            color: $blue;
+            background-color: $white;
+            padding: 8px;
+            }
         }
     }
+}
 
     .button{
         font-family: "Advent Pro", sans-serif;
