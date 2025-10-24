@@ -9,6 +9,7 @@ import PopupAdicionarColaborador from "@/components/Popup/AdicionarColaborador/P
 import PopupEditarPergunta from "@/components/Popup/EditarPergunta/PopupEditarPergunta"
 import Pergunta from "@/components/Pergunta/Pergunta"
 import "./NovaPesquisaPage.scss";
+import { PerguntaData } from '@/types';
 
 
 
@@ -16,6 +17,7 @@ const UsuariosPage = () => {
     const [isPopupOpenAddUser, setisPopupOpenAddUser] = useState(false);
     const [isPopupOpenAddPerguntas, setisPopupOpenAddPerguntas] = useState(false);
     const [isPopupOpenEditarPerguntas, setisPopupOpenEditarPerguntas] = useState(false);
+    const [perguntaSelecionada, setPerguntaSelecionada] = useState<PerguntaData | null>(null);
     const navigate = useNavigate();
 
     const [mockUsuarios, setUsuarios] = useState([
@@ -25,7 +27,7 @@ const UsuariosPage = () => {
     ]);
 
     
-        const [mockPerguntas, setMockPerguntas] = useState([
+        const [mockPerguntas, setMockPerguntas] = useState<PerguntaData[]>([
         {
             id: 1,
             titulo: "Como você avalia o ambiente de trabalho da empresa?",
@@ -62,6 +64,26 @@ const UsuariosPage = () => {
         );
     };
 
+    const handleAddPergunta = (novaPergunta: PerguntaData) => {
+            setMockPerguntas(prevPerguntas => [...prevPerguntas, novaPergunta]);
+            setisPopupOpenAddPerguntas(false); 
+        };
+    
+        const handleEditPergunta = (pergunta: PerguntaData) => {
+            setPerguntaSelecionada(pergunta);
+            setisPopupOpenEditarPerguntas(true);
+        };
+    
+        const handleSaveEdit = (perguntaEditada: PerguntaData) => {
+            setMockPerguntas(prev => 
+                prev.map(p => p.id === perguntaEditada.id ? perguntaEditada : p)
+            );
+        };
+    
+        const handleRemovePergunta = (id: number) => {
+            setMockPerguntas(prev => prev.filter(p => p.id !== id));
+        };
+
     return (
         <Pagecontainer>
             <div className="header">
@@ -76,7 +98,7 @@ const UsuariosPage = () => {
                     {mockPerguntas.map((pergunta, index)=>(
                         <Pergunta 
                             pergunta={pergunta as any} 
-                            onEdit={(p) => setisPopupOpenEditarPerguntas(true)}
+                            onEdit={(pergunta) => handleEditPergunta(pergunta)}
                             defaultExpanded={false}
                         />
                     ))} 
@@ -114,6 +136,7 @@ const UsuariosPage = () => {
             <PopupNovaPergunta
                 isOpen={isPopupOpenAddPerguntas}
                 onClose={() => setisPopupOpenAddPerguntas(false)}
+                onAdd={(pergunta) => handleAddPergunta(pergunta)}
             />
 
             <PopupAdicionarColaborador
@@ -121,10 +144,15 @@ const UsuariosPage = () => {
                 onClose={() => setisPopupOpenAddUser(false)}
             />
 
-            <PopupEditarPergunta
-                isOpen={isPopupOpenEditarPerguntas}
-                onClose={() => setisPopupOpenEditarPerguntas(false)}
-            />
+            {perguntaSelecionada && (
+                <PopupEditarPergunta
+                    isOpen={isPopupOpenEditarPerguntas}
+                    onClose={() => setisPopupOpenEditarPerguntas(false)}
+                    pergunta={perguntaSelecionada}
+                    onEdit={handleSaveEdit}
+                    onRemove={handleRemovePergunta} 
+                />
+            )}
 
         </Pagecontainer>
     );

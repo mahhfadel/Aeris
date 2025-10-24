@@ -52,15 +52,34 @@
         }
     }
 
-    .button{
-        font-family: "Advent Pro", sans-serif;
-        font-size: 1.3rem;
-        font-weight: 600;      
-        background-color: $blue;
-        border-radius: 8px;
-        color: $white;
+    .buttons{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
         flex-shrink: 0;
+
+        .buttonAdd{
+            font-family: "Advent Pro", sans-serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            border-radius: 8px;
+            background-color: $blue;
+            color: $white;
+            width: 49%;
+        }
+
+        .buttonRemove{
+            font-family: "Advent Pro", sans-serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            border-radius: 8px;
+            background-color: $red;
+            color: $white;
+            width: 49%;   
+        }
     }
+    
 
 }
 
@@ -197,7 +216,7 @@
 
             button{
                 cursor: pointer;
-                color: #e53e3e;
+                color: $red;
                 display: flex;
             }
         }

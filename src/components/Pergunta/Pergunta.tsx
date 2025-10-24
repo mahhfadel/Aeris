@@ -2,33 +2,7 @@ import React, { useState } from 'react';
 import { MdEdit, MdKeyboardArrowDown, MdKeyboardArrowUp } from 'react-icons/md';
 import './Pergunta.scss';
 
-type PerguntaDescritiva = {
-  id: number;
-  titulo: string;
-  tipo: 'descritiva';
-};
-
-type PerguntaEscala = {
-  id: number;
-  titulo: string;
-  tipo: 'escala';
-  escalaAdjetivo: string;
-};
-
-type PerguntaOpcoes = {
-  id: number;
-  titulo: string;
-  tipo: 'opcoes';
-  opcoes: string[];
-};
-
-type PerguntaData = PerguntaDescritiva | PerguntaEscala | PerguntaOpcoes;
-
-interface PerguntaProps {
-  pergunta: PerguntaData;
-  onEdit?: (pergunta: PerguntaData) => void;
-  defaultExpanded?: boolean;
-}
+import {PerguntaProps} from '@/types';
 
 const Pergunta: React.FC<PerguntaProps> = ({ 
   pergunta,
@@ -65,19 +39,19 @@ const Pergunta: React.FC<PerguntaProps> = ({
                   Pouquíssimo {pergunta.escalaAdjetivo}
                 </div>
 
-                <div key={1} className="escala-tag">
+                <div key={2} className="escala-tag">
                   Pouco {pergunta.escalaAdjetivo}
                 </div>
 
-                <div key={1} className="escala-tag">
+                <div key={3} className="escala-tag">
                   {pergunta.escalaAdjetivo}
                 </div>
 
-                <div key={1} className="escala-tag">
+                <div key={4} className="escala-tag">
                   Muito {pergunta.escalaAdjetivo}
                 </div>
 
-                <div key={1} className="escala-tag">
+                <div key={5} className="escala-tag">
                   Muitíssimo {pergunta.escalaAdjetivo}
                 </div>
             </div>

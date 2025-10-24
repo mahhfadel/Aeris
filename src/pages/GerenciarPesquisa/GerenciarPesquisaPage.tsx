@@ -9,58 +9,67 @@ import PopupAdicionarColaborador from "@/components/Popup/AdicionarColaborador/P
 import PopupEditarPergunta from "@/components/Popup/EditarPergunta/PopupEditarPergunta"
 import Pergunta from "@/components/Pergunta/Pergunta"
 import "./GerenciarPesquisaPage.scss";
-
-type PerguntaTipo = 'descritiva' | 'escala' | 'opcoes';
-
-interface PerguntaData {
-    id: number;
-    titulo: string;
-    tipo: PerguntaTipo;
-    descricao?: string;
-    escalaAdjetivo?: string;
-    opcoes?: string[];
-    multiplesEscolhas?: boolean;
-}
+import { PerguntaData } from '@/types';
 
 const UsuariosPage = () => {
     const [isPopupOpenAddUser, setisPopupOpenAddUser] = useState(false);
     const [isPopupOpenAddPerguntas, setisPopupOpenAddPerguntas] = useState(false);
     const [isPopupOpenEditarPerguntas, setisPopupOpenEditarPerguntas] = useState(false);
+    const [perguntaSelecionada, setPerguntaSelecionada] = useState<PerguntaData | null>(null);
     const navigate = useNavigate();
 
-    const [mockPerguntas, setMockPerguntas] = useState([
-    {
-        id: 1,
-        titulo: "Como você avalia o ambiente de trabalho da empresa?",
-        tipo: "descritiva",
-    },
-    {   
-        id: 2,
-        titulo: "Qual seu nível de satisfação com a liderança?",
-        tipo: "escala",
-        escalaAdjetivo: "Satisfeito"
-    },
-    {
-        id: 3,
-        titulo: "Quais benefícios você mais valoriza?",
-        tipo: "opcoes",
-        opcoes: [
-        "Vale alimentação",
-        "Plano de saúde",
-        "Home office",
-        "Vale transporte",
-        "Auxílio creche"
-        ],
-        multiplesEscolhas: true,
-    },
+    const [mockPerguntas, setMockPerguntas] = useState<PerguntaData[]>([
+        {
+            id: 1,
+            titulo: "Como você avalia o ambiente de trabalho da empresa?",
+            tipo: "descritiva",
+        },
+        {   
+            id: 2,
+            titulo: "Qual seu nível de satisfação com a liderança?",
+            tipo: "escala",
+            escalaAdjetivo: "Satisfeito"
+        },
+        {
+            id: 3,
+            titulo: "Quais benefícios você mais valoriza?",
+            tipo: "opcoes",
+            opcoes: [
+                "Vale alimentação",
+                "Plano de saúde",
+                "Home office",
+                "Vale transporte",
+                "Auxílio creche"
+            ],
+            multiplesEscolhas: true,
+        },
     ]);
 
-     const [mockUsuarios, setUsuarios] = useState([
-            { id: "1234", nome: "Ana Luiza", email: "15/10/2025", respondidos:'20', total:'35', select: false},
-            { id: "5678", nome: "Carlos Eduardo", email: "03/03/2025", respondidos:'11', total:'15', select: false},
-            { id: "9123", nome: "Carolina Santos", email: "24/06/2025", respondidos:'39', total:'45', select: false},
-        ]);
+    const [mockUsuarios, setUsuarios] = useState([
+        { id: "1234", nome: "Ana Luiza", email: "15/10/2025", respondidos:'20', total:'35', select: false},
+        { id: "5678", nome: "Carlos Eduardo", email: "03/03/2025", respondidos:'11', total:'15', select: false},
+        { id: "9123", nome: "Carolina Santos", email: "24/06/2025", respondidos:'39', total:'45', select: false},
+    ]);
 
+    const handleAddPergunta = (novaPergunta: PerguntaData) => {
+        setMockPerguntas(prevPerguntas => [...prevPerguntas, novaPergunta]);
+        setisPopupOpenAddPerguntas(false); 
+    };
+
+    const handleEditPergunta = (pergunta: PerguntaData) => {
+        setPerguntaSelecionada(pergunta);
+        setisPopupOpenEditarPerguntas(true);
+    };
+
+    const handleSaveEdit = (perguntaEditada: PerguntaData) => {
+        setMockPerguntas(prev => 
+            prev.map(p => p.id === perguntaEditada.id ? perguntaEditada : p)
+        );
+    };
+
+    const handleRemovePergunta = (id: number) => {
+        setMockPerguntas(prev => prev.filter(p => p.id !== id));
+    };
 
     return (
         <Pagecontainer>
@@ -80,10 +89,11 @@ const UsuariosPage = () => {
 
             <div className='body'> 
                 <Expandable title="Perguntas"  contentButton="Nova pergunta" onButtonAdd={() => setisPopupOpenAddPerguntas(true)} buttonVisible={true}>
-                    {mockPerguntas.map((pergunta, index)=>(
+                    {mockPerguntas.map((pergunta) => (
                         <Pergunta 
-                            pergunta={pergunta as any} 
-                            onEdit={(p) => setisPopupOpenEditarPerguntas(true)}
+                            key={pergunta.id}
+                            pergunta={pergunta} 
+                            onEdit={(pergunta) => handleEditPergunta(pergunta)}
                             defaultExpanded={false}
                         />
                     ))}
@@ -94,23 +104,23 @@ const UsuariosPage = () => {
                         <Table.Root className="table-user-element">
                             <Table.Header className="table-header">
                                 <Table.Row>
-                                <Table.ColumnHeader textAlign="left">Nome Completo</Table.ColumnHeader>
-                                <Table.ColumnHeader textAlign="center">Gênero</Table.ColumnHeader>
-                                <Table.ColumnHeader textAlign="center">Setor</Table.ColumnHeader>
-                                <Table.ColumnHeader textAlign="center">Cargo</Table.ColumnHeader>
-                                <Table.ColumnHeader textAlign="center">Tempo de casa</Table.ColumnHeader>
+                                    <Table.ColumnHeader textAlign="left">Nome Completo</Table.ColumnHeader>
+                                    <Table.ColumnHeader textAlign="center">Gênero</Table.ColumnHeader>
+                                    <Table.ColumnHeader textAlign="center">Setor</Table.ColumnHeader>
+                                    <Table.ColumnHeader textAlign="center">Cargo</Table.ColumnHeader>
+                                    <Table.ColumnHeader textAlign="center">Tempo de casa</Table.ColumnHeader>
                                 </Table.Row>
                             </Table.Header>
 
                             <Table.Body className="table-body">
                                 {mockUsuarios.map((item) => (
-                                <Table.Row key={item.id}>
-                                    <Table.Cell textAlign="left">{item.nome}</Table.Cell>
-                                    <Table.Cell textAlign="center">{item.email}</Table.Cell>
-                                    <Table.Cell textAlign="center">{item.total}</Table.Cell>
-                                    <Table.Cell textAlign="center">{item.email}</Table.Cell>
-                                    <Table.Cell textAlign="center">{item.total}</Table.Cell>
-                                </Table.Row>
+                                    <Table.Row key={item.id}>
+                                        <Table.Cell textAlign="left">{item.nome}</Table.Cell>
+                                        <Table.Cell textAlign="center">{item.email}</Table.Cell>
+                                        <Table.Cell textAlign="center">{item.total}</Table.Cell>
+                                        <Table.Cell textAlign="center">{item.email}</Table.Cell>
+                                        <Table.Cell textAlign="center">{item.total}</Table.Cell>
+                                    </Table.Row>
                                 ))}
                             </Table.Body>
                         </Table.Root>
@@ -125,6 +135,7 @@ const UsuariosPage = () => {
             <PopupNovaPergunta
                 isOpen={isPopupOpenAddPerguntas}
                 onClose={() => setisPopupOpenAddPerguntas(false)}
+                onAdd={(pergunta) => handleAddPergunta(pergunta)}
             />
 
             <PopupAdicionarColaborador
@@ -132,10 +143,15 @@ const UsuariosPage = () => {
                 onClose={() => setisPopupOpenAddUser(false)}
             />
 
-            <PopupEditarPergunta
-                isOpen={isPopupOpenEditarPerguntas}
-                onClose={() => setisPopupOpenEditarPerguntas(false)}
-            />
+            {perguntaSelecionada && (
+                <PopupEditarPergunta
+                    isOpen={isPopupOpenEditarPerguntas}
+                    onClose={() => setisPopupOpenEditarPerguntas(false)}
+                    pergunta={perguntaSelecionada}
+                    onEdit={handleSaveEdit}
+                    onRemove={handleRemovePergunta} 
+                />
+            )}
 
         </Pagecontainer>
     );

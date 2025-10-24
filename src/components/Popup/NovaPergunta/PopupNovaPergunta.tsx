@@ -3,13 +3,15 @@ import Popup from "@/components/Popup/Popup";
 import {Button, Input, NativeSelectRoot, NativeSelectField, Field, Group } from "@chakra-ui/react"
 import { MdClose  } from "react-icons/md";
 import "./PopupNovaPergunta.scss";
+import {PerguntaData} from '@/types';
 
 interface PopupProps {
   isOpen: boolean;
   onClose: () => void;
+  onAdd: (pergunta: PerguntaData) => void;
 }
 
-const PopupNovaPergunta: React.FC<PopupProps> = ({ isOpen, onClose }) => {
+const PopupNovaPergunta: React.FC<PopupProps> = ({ isOpen, onClose, onAdd }) => {
   if (!isOpen) return null;
 
     const [tipoPergunta, setTipoPergunta] = useState<'descritiva' | 'escala' | 'opcoes'>('descritiva');
@@ -111,6 +113,7 @@ const PopupNovaPergunta: React.FC<PopupProps> = ({ isOpen, onClose }) => {
             break;
         }
         resetForm();
+        onAdd(novaPergunta);
     };
 
     const resetForm = () => {
