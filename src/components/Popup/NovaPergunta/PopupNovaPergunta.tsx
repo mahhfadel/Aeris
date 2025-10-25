@@ -81,6 +81,11 @@ const PopupNovaPergunta: React.FC<PopupProps> = ({ isOpen, onClose, onAdd }) => 
             return;
         }
 
+        if (tipoPergunta === 'opcoes' && opcoes.length > 12) {
+            setOpcoesError('Você só pode inserir 12 opções');
+            return;
+        }
+
         let novaPergunta: PerguntaData;
         const id = Date.now();
 

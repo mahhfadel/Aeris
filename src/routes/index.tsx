@@ -11,6 +11,7 @@ import Usuarios from '../pages/Usuarios/UsuariosPage';
 import Pesquisas from '../pages/Pesquisas/PesquisasPage'
 import NovaPesquisa from '../pages/NovaPesquisa/NovaPesquisaPage';
 import GerenciarPesquisa from '../pages/GerenciarPesquisa/GerenciarPesquisaPage'
+import ResponderPesquisa from '../pages/ResponderPesquisa/ResponderPesquisaPage'
 
 export default function AppRoutes() {
   return (
@@ -25,6 +26,7 @@ export default function AppRoutes() {
       <Route path="/pesquisas" element={<Pesquisas />} />
       <Route path="/nova-pesquisa" element={<NovaPesquisa />} />
       <Route path="/gerenciar-pesquisa" element={<GerenciarPesquisa />} />
+      <Route path="/responder-pesquisa" element={<ResponderPesquisa />} />
     </Routes>
   );
 }

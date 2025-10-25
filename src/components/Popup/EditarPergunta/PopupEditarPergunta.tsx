@@ -97,6 +97,11 @@ const PopupEditarPergunta: React.FC<PopupProps> = ({
       return;
     }
 
+    if (tipoPergunta === 'opcoes' && opcoes.length > 12) {
+      setOpcoesError('Você só pode inserir 12 opções');
+      return;
+    }
+
     let perguntaEditada: PerguntaData;
 
     switch (tipoPergunta) {

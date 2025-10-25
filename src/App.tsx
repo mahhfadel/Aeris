@@ -8,7 +8,7 @@ function AppWrapper() {
   const location = useLocation();
 
   // Lista de rotas em que a Sidebar NÃO deve aparecer
-  const noSidebarRoutes = ["/login", "/recuperar-senha", "/alterar-senha", "/login-colaborador", "/verificar-pin"];
+  const noSidebarRoutes = ["/login", "/recuperar-senha", "/alterar-senha", "/login-colaborador", "/verificar-pin", "/responder-pesquisa"];
 
   const showSidebar = !noSidebarRoutes.includes(location.pathname);
 

@@ -94,8 +94,8 @@ const UsuariosPage = () => {
             </div>
 
             <div className='body'> 
-                <Expandable title="Perguntas"  defaultExpanded={true} contentButton="Nova pergunta" onButtonAdd={() => setisPopupOpenAddPerguntas(true)} buttonVisible={true}>
-                    {mockPerguntas.map((pergunta, index)=>(
+                <Expandable title="Perguntas"  defaultExpanded={false} contentButton="Nova pergunta" onButtonAdd={() => setisPopupOpenAddPerguntas(true)} buttonVisible={true}>
+                    {mockPerguntas.map((pergunta)=>(
                         <Pergunta 
                             pergunta={pergunta as any} 
                             onEdit={(pergunta) => handleEditPergunta(pergunta)}
