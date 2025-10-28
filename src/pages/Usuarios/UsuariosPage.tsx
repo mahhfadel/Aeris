@@ -97,14 +97,6 @@ const UsuariosPage = () => {
                             </NativeSelectRoot>
                         </div>
 
-                        <Field.Root invalid={!!emailError}>
-                            <Field.Label className='input-label'>
-                                Confirme email
-                            </Field.Label>
-                            <Input placeholder="00/00/0000" type="date" width="full" className='input' onChange={(e) => setEmail(e.target.value)}/>
-                            <Field.ErrorText fontSize="0.9rem">{emailError}</Field.ErrorText>
-                        </Field.Root>
-
                         <Button type="submit" width="full" className="button" onSubmit={handleSubmitAddUsuario}>
                             Adicionar
                         </Button>
