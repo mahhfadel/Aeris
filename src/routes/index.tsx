@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 
 import Login from '../pages/Login/LoginPage';
 import RecuperarConta from '../pages/Login/RecuperarContaPage';
@@ -12,6 +12,7 @@ import Pesquisas from '../pages/Pesquisas/PesquisasPage'
 import NovaPesquisa from '../pages/NovaPesquisa/NovaPesquisaPage';
 import GerenciarPesquisa from '../pages/GerenciarPesquisa/GerenciarPesquisaPage'
 import ResponderPesquisa from '../pages/ResponderPesquisa/ResponderPesquisaPage'
+import PrivateRoute from '@/components/PrivateRoute';
 import Senso from '../pages/Login/SensoPage'
 
 export default function AppRoutes() {
@@ -22,13 +23,16 @@ export default function AppRoutes() {
       <Route path="/alterar-senha" element={<AlterarSenha />} />
       <Route path="/login-colaborador" element={<LoginColaborador />} />
       <Route path="/verificar-pin" element={<VerificacaoPin />} />
-      <Route path="/home" element={<Home />} />
-      <Route path="/usuarios" element={<Usuarios />} />
-      <Route path="/pesquisas" element={<Pesquisas />} />
-      <Route path="/nova-pesquisa" element={<NovaPesquisa />} />
-      <Route path="/gerenciar-pesquisa" element={<GerenciarPesquisa />} />
-      <Route path="/responder-pesquisa" element={<ResponderPesquisa />} />
-      <Route path="/senso" element={<Senso />} />
+      <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
+      <Route path="/usuarios" element={<PrivateRoute><Usuarios /></PrivateRoute>} />
+      <Route path="/pesquisas" element={<PrivateRoute><Pesquisas /></PrivateRoute>} />
+      <Route path="/nova-pesquisa" element={<PrivateRoute><NovaPesquisa /></PrivateRoute>} />
+      <Route path="/gerenciar-pesquisa" element={<PrivateRoute><GerenciarPesquisa /></PrivateRoute>} />
+      <Route path="/responder-pesquisa" element={<PrivateRoute><ResponderPesquisa /></PrivateRoute>} />
+      <Route path="/senso" element={<PrivateRoute><Senso /></PrivateRoute>} />
+
+      <Route path="/" element={<Navigate to="/login" replace />} />
+      <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
   );
 }

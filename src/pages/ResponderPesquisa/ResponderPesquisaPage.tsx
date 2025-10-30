@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { BsEmojiFrown, BsEmojiAstonished, BsEmojiNeutral, BsEmojiSmile, BsEmojiGrin} from "react-icons/bs";
-import {Button, Field} from "@chakra-ui/react"
+import authService from '../../services/authService';
+import {Button} from "@chakra-ui/react"
 import "./ResponderPesquisaPage.scss";
 import logo from '@/assets/Logo.svg';
 import { useNavigate} from "react-router-dom";
@@ -74,6 +75,7 @@ const ResponderPesquisaPage = () => {
     };
 
     const handleLogout = () => {
+        authService.logout();
         navigate("/login");
     };
 
