@@ -2,12 +2,18 @@ import React, { useState } from 'react';
 import { Field, Input, HStack, Button, Text, Link   } from "@chakra-ui/react"
 import { LuEye, LuEyeOff } from 'react-icons/lu';
 import { PasswordInput } from "@/components/ui/password-input"
+import authService from '../../services/authService';
+import { useNavigate} from "react-router-dom";
+import { AxiosError } from 'axios';
 import logo from '@/assets/Logo.svg';
 import "./LoginPage.scss";
 
-
+interface ErrorResponse {
+  mensagem: string;
+}
 
 const LoginColaboradorPage = () => {
+    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [chave, setChave] = useState('');
     const [emailError, setEmailError] = useState('');
@@ -17,7 +23,7 @@ const LoginColaboradorPage = () => {
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         setEmailError('');
@@ -35,12 +41,22 @@ const LoginColaboradorPage = () => {
         if (!chave) {
             setChaveError('Insira a chave da pesquisa');
             return
-        } else if (chave.length < 10) {
+        } else if (chave.length < 5) {
             setChaveError('A chave deve conter pelo menos 10 caracteres');
             return
         }
 
-        alert('SUCESSO!');
+        try {
+            const response = await authService.loginColaborador(email, chave);
+            navigate(`/responder-pesquisa?id=${response.id_pesquisa}`);
+        } catch (err) {
+            const axiosError = err as AxiosError<ErrorResponse>;
+            const errorMessage = 
+                axiosError.response?.data?.mensagem || 
+                'Erro ao fazer login. Verifique as informações fornecidas';
+            setChaveError(errorMessage);
+            console.error('Erro:', err);
+        }
     };
 
     return (

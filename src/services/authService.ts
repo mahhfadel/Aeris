@@ -1,17 +1,43 @@
-import axios, { AxiosError } from 'axios';
-import { LoginRequest, LoginResponse, User, JwtPayload } from '../types/auth.types';
+import { AxiosError } from 'axios';
+import { getApi} from '../config';
+import { LoginRequest, LoginResponse, LoginColaboradorResponse, User, JwtPayload } from '../types/auth.types';
 
-const API_URL = 'http://localhost:8080/api/auth';
+export const authApi = getApi('auth');
+
 
 class AuthService {
   async login(email: string, senha: string): Promise<LoginResponse> {
     try {
-      const response = await axios.post<LoginResponse>(`${API_URL}/login`, {
+      const response = await authApi.post<LoginResponse>('/auth/login', {
         email,
         senha
       } as LoginRequest);
       
-      console.log('Resposta do login:', response.data);
+      
+      if (response.data.token) {
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('user', JSON.stringify({
+          nome: response.data.nome,
+          email: response.data.email,
+          empresa: response.data.empresa
+        } as User));
+      }
+      
+      return response.data;
+    } catch (error) {
+      const axiosError = error as AxiosError<{ mensagem: string }>;
+      console.error('Erro no login:', axiosError.response?.data || axiosError.message);
+      throw error;
+    }
+  }
+
+  async loginColaborador(email: string, senha: string): Promise<LoginColaboradorResponse> {
+    try {
+      const response = await authApi.post<LoginColaboradorResponse>('/auth/login-colaborador', {
+        email,
+        senha
+      } as LoginRequest);
+      
       
       if (response.data.token) {
         localStorage.setItem('token', response.data.token);
@@ -102,7 +128,7 @@ class AuthService {
       const token = this.getToken();
       if (!token) return false;
 
-      const response = await axios.get<{ valid: boolean }>(`${API_URL}/validate`, {
+      const response = await authApi.get<{ valid: boolean }>('/auth/validate', {
         headers: {
           Authorization: `Bearer ${token}`
         }

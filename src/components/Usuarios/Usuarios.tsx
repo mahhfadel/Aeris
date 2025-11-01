@@ -2,11 +2,11 @@ import React from "react";
 import "./Usuarios.scss";
 
 interface Usuarios {
-    id: string;
+    id: number;
     nome: string;
     email: string;
-    respondidos: string;
-    total: string;
+    respondidos: number;
+    total: number;
 }
 
 const Usuarios: React.FC<Usuarios> = ({id, nome, email, respondidos, total}) => {

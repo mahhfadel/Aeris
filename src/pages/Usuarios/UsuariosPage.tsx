@@ -1,31 +1,45 @@
-import React, { useState } from 'react';
-import {Button, Table, Input,NativeSelectRoot, NativeSelectField, Field} from "@chakra-ui/react"
+import React, {useEffect, useState } from 'react';
+import {Button, Input,NativeSelectRoot, NativeSelectField, Field} from "@chakra-ui/react"
+import usuarioService from '../../services/usuariosService';
+import authService from '../../services/authService';
+import { AllUsuariosResponse } from '../../types/usuario.types';
+import { ErrorResponse } from '../../types/error.types';
 import { MdOutlineAdd } from "react-icons/md";
 import Pagecontainer from "@/components/props/PageContainerProps"
 import Usuarios from "@/components/Usuarios/Usuarios"
 import Popup from "@/components/Popup/Popup";
 import "./UsuariosPage.scss";
 
-
+interface State {
+  usuarios: AllUsuariosResponse[];
+}
 
 const UsuariosPage = () => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [email, setEmail] = useState('');
     const [emailError, setEmailError] = useState('');
 
-    const mockUsuarios = [
-        { id: "1234", nome: "Ana Luiza", email: "15/10/2025", respondidos:'20', total:'35', select: false},
-        { id: "5678", nome: "Carlos Eduardo", email: "03/03/2025", respondidos:'11', total:'15', select: false},
-        { id: "9123", nome: "Carolina Santos", email: "24/06/2025", respondidos:'39', total:'45', select: false},
-    ];
 
-    const handleSubmit = () => {
-        alert('Usuário adicionado com sucesso!');
-        setIsPopupOpen(false)
+    const [state, setState] = useState<State>({
+        usuarios: []
+    });
+
+    const buscarUsuarios = async (empresaId: number) => {
+        setState((prev) => ({ ...prev, loading: true, error: null }));
+
+        const data = await usuarioService.getAllUsers(empresaId);
+        setState({ usuarios: data});
     };
 
+    useEffect(() => {
+        buscarUsuarios(1);
+    }, []);
+
+    const { usuarios} = state;
+
+    console.log(usuarios)
+
     const handleSubmitAddUsuario = () => {
-        alert('Pergunta adicionada com sucesso!');
         setIsPopupOpen(false)
     };
 
@@ -39,8 +53,8 @@ const UsuariosPage = () => {
                 </Button>
             </div>
             <div className='usuarios-list'>
-                {mockUsuarios.map((usuario) => (
-                    <Usuarios id={usuario.id} nome={usuario.nome} email={usuario.email} respondidos={usuario.respondidos} total={usuario.total}/>
+                {usuarios.map((usuario) => (
+                    <Usuarios key={usuario.id} id={usuario.id} nome={usuario.nome} email={usuario.email} respondidos={usuario.respondidos} total={usuario.total}/>
                 ))}
             </div>
 
