@@ -3,17 +3,18 @@ import { Field, Input, HStack, Button, Text, Link   } from "@chakra-ui/react"
 import { LuEye, LuEyeOff } from 'react-icons/lu';
 import { PasswordInput } from "@/components/ui/password-input"
 import authService from '../../services/authService';
+import usuariosService from '../../services/usuariosService';
 import { useNavigate} from "react-router-dom";
 import { AxiosError } from 'axios';
 import logo from '@/assets/Logo.svg';
 import "./LoginPage.scss";
-
-interface ErrorResponse {
-  mensagem: string;
-}
+import { ErrorResponse } from '../../types/error.types';
+import DialogPopup from "@/components/Popup/DialogPopup"
 
 const LoginColaboradorPage = () => {
     const navigate = useNavigate();
+    const [isMessagemPopupOpen, setIsMessagemPopupOpen] = useState(false);
+    const [mensagemPopup, setMensagemPopup] = useState('');
     const [email, setEmail] = useState('');
     const [chave, setChave] = useState('');
     const [emailError, setEmailError] = useState('');
@@ -28,6 +29,7 @@ const LoginColaboradorPage = () => {
 
         setEmailError('');
         setChaveError('');
+        setMensagemPopup('');
 
         if (!email) {
             setEmailError('Insira um email');
@@ -42,19 +44,38 @@ const LoginColaboradorPage = () => {
             setChaveError('Insira a chave da pesquisa');
             return
         } else if (chave.length < 5) {
-            setChaveError('A chave deve conter pelo menos 10 caracteres');
+            setChaveError('A chave deve conter pelo menos 8 caracteres');
             return
         }
 
         try {
             const response = await authService.loginColaborador(email, chave);
-            navigate(`/responder-pesquisa?id=${response.id_pesquisa}`);
+
+            try{
+                const respondeuSenso = await usuariosService.respondeuOSenso(response.email);
+
+                if(respondeuSenso.dadosRespondidos){
+                     navigate(`/responder-pesquisa?id=${response.id_pesquisa}`);
+                } else{
+                    navigate('/senso')
+                }
+            } catch (err) {
+                const axiosError = err as AxiosError<ErrorResponse>;
+                const errorMessage = 
+                    axiosError.response?.data?.message || 
+                    'Erro ao verificar se o usuário respondeu o senso';
+                setMensagemPopup(errorMessage);
+                setIsMessagemPopupOpen(true)
+                console.error('Erro:', err);
+
+            }
         } catch (err) {
             const axiosError = err as AxiosError<ErrorResponse>;
             const errorMessage = 
-                axiosError.response?.data?.mensagem || 
+                axiosError.response?.data?.message || 
                 'Erro ao fazer login. Verifique as informações fornecidas';
-            setChaveError(errorMessage);
+            setMensagemPopup(errorMessage);
+            setIsMessagemPopupOpen(true)
             console.error('Erro:', err);
         }
     };
@@ -99,6 +120,16 @@ const LoginColaboradorPage = () => {
                         </Text>
                     </HStack>
             </div>
+
+            <DialogPopup
+                isOpen={isMessagemPopupOpen}
+                onClose={() => setIsMessagemPopupOpen(false)}
+                viewConfirmaButton={true}
+                onConfirma={() => setIsMessagemPopupOpen(false)}
+                viewCancelButton={false}
+                mensagem={mensagemPopup}
+            />
+
         </div>
     );
 };

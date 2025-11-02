@@ -76,7 +76,7 @@ const ResponderPesquisaPage = () => {
 
     const handleLogout = () => {
         authService.logout();
-        navigate("/login");
+        navigate("/login-colaborador");
     };
 
     const handleNext = () => {

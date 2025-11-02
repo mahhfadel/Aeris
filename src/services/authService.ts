@@ -43,7 +43,8 @@ class AuthService {
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('user', JSON.stringify({
           nome: response.data.nome,
-          email: response.data.email
+          email: response.data.email,
+          idPesquisa: response.data.id_pesquisa,
         } as User));
       }
       

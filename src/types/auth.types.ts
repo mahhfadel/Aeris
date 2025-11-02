@@ -23,6 +23,7 @@ export interface User {
   nome: string;
   email: string;
   empresa: number;
+  idPesquisa: number;
 }
 
 export interface JwtPayload {

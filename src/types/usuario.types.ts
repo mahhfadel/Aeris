@@ -38,3 +38,20 @@ export interface AllUsuariosResponse {
   respondidos: number;
   total: number;
 }
+
+export interface DadosPessoaisRequest{
+  genero: string;
+  contratado_em: Date;
+  data_nascimento: Date;
+  setor: string;
+  cargo: string;
+  sexualidade: string;
+  termos_de_uso: boolean;
+  emailUsuario: string;
+}
+
+export interface DadosPessoaisResponse{
+  emailUsuario: string;
+  dadosRespondidos: boolean;
+  mensagem: string;
+}
