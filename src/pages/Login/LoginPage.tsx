@@ -7,10 +7,7 @@ import authService from '../../services/authService';
 import { AxiosError } from 'axios';
 import logo from '@/assets/Logo.svg';
 import "./LoginPage.scss";
-
-interface ErrorResponse {
-  mensagem: string;
-}
+import { ErrorResponse } from '../../types/error.types';
 
 const LoginPage = () => {
     const navigate = useNavigate();
@@ -52,7 +49,7 @@ const LoginPage = () => {
         } catch (err) {
             const axiosError = err as AxiosError<ErrorResponse>;
             const errorMessage = 
-                axiosError.response?.data?.mensagem || 
+                axiosError.response?.data?.message || 
                 'Erro ao fazer login. Verifique suas credenciais.';
             setPasswordError(errorMessage);
             console.error('Erro:', err);

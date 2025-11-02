@@ -4,7 +4,7 @@ import authService from '../services/authService';
 export const createApi = (baseURL: string): AxiosInstance => {
   const api = axios.create({
     baseURL,
-    timeout: 10000,
+    timeout: 1000000,
     headers: {
       'Content-Type': 'application/json'
     }
