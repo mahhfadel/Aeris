@@ -56,6 +56,20 @@ class AuthService {
     }
   }
 
+  async isAdm(): Promise<Boolean> {
+    try {
+      const response = await authApi.get<Boolean>('/auth/isAdm', {
+        params:{token: this.getToken()}
+      });
+      
+      return response.data;
+    } catch (error) {
+      const axiosError = error as AxiosError<{ mensagem: string }>;
+      console.error('Erro ao verificar se usuário é admin:', axiosError.response?.data || axiosError.message);
+      throw error;
+    }
+  }
+
 
   logout(): void {
     localStorage.removeItem('token');

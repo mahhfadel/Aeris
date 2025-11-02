@@ -111,13 +111,6 @@ const LoginColaboradorPage = () => {
                         <Button type="submit" width="full" className="button" onSubmit={handleSubmit}>
                             Entrar
                         </Button>
-
-                        <Text className='navegation-text'>
-                            Esqueceu sua senha?{" "}
-                            <Link href="/recuperar-senha" color="#002930" textDecoration="underline">
-                                Clique aqui
-                            </Link>
-                        </Text>
                     </HStack>
             </div>
 

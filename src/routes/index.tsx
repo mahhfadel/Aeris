@@ -18,21 +18,24 @@ import Senso from '../pages/Login/SensoPage'
 export default function AppRoutes() {
   return (
     <Routes>
+      {/* Rotas administrador */}
       <Route path="/login" element={<Login />} />
       <Route path="/recuperar-senha" element={<RecuperarConta />} />
       <Route path="/alterar-senha" element={<AlterarSenha />} />
-      <Route path="/login-colaborador" element={<LoginColaborador />} />
       <Route path="/verificar-pin" element={<VerificacaoPin />} />
-      <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
-      <Route path="/usuarios" element={<PrivateRoute><Usuarios /></PrivateRoute>} />
-      <Route path="/pesquisas" element={<PrivateRoute><Pesquisas /></PrivateRoute>} />
-      <Route path="/nova-pesquisa" element={<PrivateRoute><NovaPesquisa /></PrivateRoute>} />
-      <Route path="/gerenciar-pesquisa" element={<PrivateRoute><GerenciarPesquisa /></PrivateRoute>} />
-      <Route path="/responder-pesquisa" element={<PrivateRoute><ResponderPesquisa /></PrivateRoute>} />
-      <Route path="/senso" element={<PrivateRoute><Senso /></PrivateRoute>} />
+      <Route path="/home" element={<PrivateRoute isAdmRoute={true}><Home /></PrivateRoute>} />
+      <Route path="/usuarios" element={<PrivateRoute isAdmRoute={true}><Usuarios /></PrivateRoute>} />
+      <Route path="/pesquisas" element={<PrivateRoute isAdmRoute={true}><Pesquisas /></PrivateRoute>} />
+      <Route path="/nova-pesquisa" element={<PrivateRoute isAdmRoute={true}><NovaPesquisa /></PrivateRoute>} />
+      <Route path="/gerenciar-pesquisa" element={<PrivateRoute isAdmRoute={true}><GerenciarPesquisa /></PrivateRoute>} />
 
-      <Route path="/" element={<Navigate to="/login" replace />} />
-      <Route path="*" element={<Navigate to="/login" replace />} />
+      {/* Rotas colaborador */}
+      <Route path="/login-colaborador" element={<LoginColaborador />} />
+      <Route path="/responder-pesquisa" element={<PrivateRoute isAdmRoute={false}><ResponderPesquisa /></PrivateRoute>} />
+      <Route path="/senso" element={<PrivateRoute isAdmRoute={false}><Senso /></PrivateRoute>} />
+
+      <Route path="/" element={<Navigate to="/login-colaborador" replace />} />
+      <Route path="*" element={<Navigate to="/login-colaborador" replace />} />
     </Routes>
   );
 }
