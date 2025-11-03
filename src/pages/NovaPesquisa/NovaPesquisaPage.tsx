@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState } from 'react';
 import {Table } from "@chakra-ui/react"
 import { MdArrowBackIos } from "react-icons/md";
 import { useNavigate} from "react-router-dom";
@@ -10,8 +10,12 @@ import PopupEditarPergunta from "@/components/Popup/EditarPergunta/PopupEditarPe
 import Pergunta from "@/components/Pergunta/Pergunta"
 import "./NovaPesquisaPage.scss";
 import { PerguntaData } from '@/types';
+import { AllUsuariosResponse } from '../../types/usuario.types';
+import usuarioService from '../../services/usuariosService';
 
-
+interface State {
+  usuarios: AllUsuariosResponse[];
+}
 
 const UsuariosPage = () => {
     const [isPopupOpenAddUser, setisPopupOpenAddUser] = useState(false);
@@ -19,6 +23,23 @@ const UsuariosPage = () => {
     const [isPopupOpenEditarPerguntas, setisPopupOpenEditarPerguntas] = useState(false);
     const [perguntaSelecionada, setPerguntaSelecionada] = useState<PerguntaData | null>(null);
     const navigate = useNavigate();
+
+    const [state, setState] = useState<State>({
+            usuarios: []
+        });
+    
+        const buscarUsuarios = async () => {
+            setState((prev) => ({ ...prev, loading: true, error: null }));
+    
+            const data = await usuarioService.getAllUsers();
+            setState({ usuarios: data});
+        };
+    
+        useEffect(() => {
+            buscarUsuarios();
+        }, []);
+    
+        const { usuarios} = state;
 
     const [mockUsuarios, setUsuarios] = useState([
         { id: "1234", nome: "Ana Luiza", email: "15/10/2025", respondidos:'20', total:'35', select: false},
