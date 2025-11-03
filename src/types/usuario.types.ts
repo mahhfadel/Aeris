@@ -41,8 +41,8 @@ export interface AllUsuariosResponse {
 
 export interface DadosPessoaisRequest{
   genero: string;
-  contratado_em: Date;
-  data_nascimento: Date;
+  contratado_em: string;
+  data_nascimento: string;
   setor: string;
   cargo: string;
   sexualidade: string;

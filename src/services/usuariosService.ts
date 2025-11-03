@@ -48,6 +48,29 @@ class UsuarioService {
       throw error;
     }
   }
+
+  async responderOSenso(genero: string, contratado_em: string, data_nascimento: string, setor: string, cargo: string, sexualidade: string, termos_de_uso: boolean): Promise<DadosPessoaisResponse> {
+    try {
+      const emailUsuario = authService.getCurrentUser().email;
+
+      const response = await userApi.post<DadosPessoaisResponse>('/senso/responder-senso', {
+        genero,
+        contratado_em,
+        data_nascimento,
+        setor,
+        cargo,
+        sexualidade,
+        termos_de_uso,
+        emailUsuario
+      } as DadosPessoaisRequest);
+      
+      return response.data;
+    } catch (error) {
+      const axiosError = error as AxiosError<{ mensagem: string }>;
+      console.error('Erro ao responder o senso', axiosError.response?.data || axiosError.message);
+      throw error;
+    }
+  }
 }
 
 export default new UsuarioService();

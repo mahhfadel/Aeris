@@ -65,7 +65,7 @@ class AuthService {
       return response.data;
     } catch (error) {
       const axiosError = error as AxiosError<{ mensagem: string }>;
-      console.error('Erro ao verificar se usuário é admin:', axiosError.response?.data || axiosError.message);
+      console.error('Erro ao verificar se usuário é administrador:', axiosError.response?.data || axiosError.message);
       throw error;
     }
   }
