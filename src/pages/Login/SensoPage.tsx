@@ -126,15 +126,15 @@ const LoginPage = () => {
                             <Field.Label className="input-label">Identidade de Gênero</Field.Label>
                             <NativeSelectRoot>
                                 <NativeSelectField className="input" placeholder="Selecione o gênero" onChange={(e) => setIdentidadeGenero(e.target.value)}>
-                                <option value="homem-cis">Homem cis</option>
-                                <option value="homem-trans">Homem trans</option>
-                                <option value="mulher-cis">Mulher cis</option>
-                                <option value="mulher-trans">Mulher trans</option>
-                                <option value="nao-binario">Não binário</option>
-                                <option value="intersexo">Intersexo</option>
-                                <option value="agenero">Agênero</option>
-                                <option value="outro">Outro</option>
-                                <option value="prefiro-nao-informar">Prefiro não informar</option>
+                                <option value="Homem cis">Homem cis</option>
+                                <option value="Homem trans">Homem trans</option>
+                                <option value="Mulher cis">Mulher cis</option>
+                                <option value="Mulher trans">Mulher trans</option>
+                                <option value="Não binario">Não binário</option>
+                                <option value="Intersexo">Intersexo</option>
+                                <option value="Agenero">Agênero</option>
+                                <option value="Outro">Outro</option>
+                                <option value="prefiro não informar">Prefiro não informar</option>
                                 </NativeSelectField>
                             </NativeSelectRoot>
                             <Field.ErrorText fontSize="0.9rem">{identidadeGeneroError}</Field.ErrorText>
@@ -146,13 +146,13 @@ const LoginPage = () => {
                             <Field.Label className="input-label">Orientação Sexual</Field.Label>
                             <NativeSelectRoot>
                                 <NativeSelectField className="input" placeholder="Selecione a orientação sexual" onChange={(e) => setOrientacaoSexual(e.target.value)}>
-                                <option value="heterossexual">Heterossexual</option>
-                                <option value="homossexual">Homossexual</option>
-                                <option value="bissexual">Bissexual</option>
-                                <option value="pansexual">Pansexual</option>
-                                <option value="assexual">Assexual</option>
-                                <option value="outro">Outro</option>
-                                <option value="prefiro-nao-informar">Prefiro não informar</option>
+                                <option value="Heterossexual">Heterossexual</option>
+                                <option value="Homossexual">Homossexual</option>
+                                <option value="Bissexual">Bissexual</option>
+                                <option value="Pansexual">Pansexual</option>
+                                <option value="Assexual">Assexual</option>
+                                <option value="Outro">Outro</option>
+                                <option value="Prefiro não informar">Prefiro não informar</option>
                                 </NativeSelectField>
                             </NativeSelectRoot>
                             <Field.ErrorText fontSize="0.9rem">{orientacaoSexualError}</Field.ErrorText>
@@ -164,26 +164,26 @@ const LoginPage = () => {
                             <Field.Label className="input-label">Setor</Field.Label>
                             <NativeSelectRoot>
                                 <NativeSelectField className="input" placeholder="Selecione o setor" onChange={(e) => setSetor(e.target.value)}>
-                                    <option value="administrativo">Administrativo</option>
-                                    <option value="financeiro">Financeiro</option>
-                                    <option value="tecnologia_da_informacao">Tecnologia da Informação</option>
-                                    <option value="recursos_humanos">Recursos Humanos</option>
-                                    <option value="marketing">Marketing</option>
-                                    <option value="vendas">Vendas</option>
-                                    <option value="logistica">Logística</option>
-                                    <option value="juridico">Jurídico</option>
-                                    <option value="comercial">Comercial</option>
-                                    <option value="producao">Produção</option>
-                                    <option value="planejamento_estrategico">Planejamento Estratégico</option>
-                                    <option value="atendimento_ao_cliente">Atendimento ao Cliente</option>
-                                    <option value="compras">Compras</option>
-                                    <option value="manutencao">Manutenção</option>
-                                    <option value="qualidade">Qualidade</option>
-                                    <option value="pesquisa_e_desenvolvimento">Pesquisa e Desenvolvimento</option>
-                                    <option value="comunicacao">Comunicação</option>
-                                    <option value="seguranca_do_trabalho">Segurança do Trabalho</option>
-                                    <option value="sustentabilidade">Sustentabilidade</option>
-                                    <option value="expedicao">Expedição</option>
+                                    <option value="Administrativo">Administrativo</option>
+                                    <option value="Financeiro">Financeiro</option>
+                                    <option value="Tecnologia da informação">Tecnologia da Informação</option>
+                                    <option value="Recursos humanos">Recursos Humanos</option>
+                                    <option value="Marketing">Marketing</option>
+                                    <option value="Vendas">Vendas</option>
+                                    <option value="Logística">Logística</option>
+                                    <option value="Jurídico">Jurídico</option>
+                                    <option value="Comercial">Comercial</option>
+                                    <option value="Produção">Produção</option>
+                                    <option value="Planejamento estratégico">Planejamento Estratégico</option>
+                                    <option value="Atendimento ao cliente">Atendimento ao Cliente</option>
+                                    <option value="Compras">Compras</option>
+                                    <option value="Manutenção">Manutenção</option>
+                                    <option value="Qualidade">Qualidade</option>
+                                    <option value="Pesquisa e desenvolvimento">Pesquisa e Desenvolvimento</option>
+                                    <option value="Comunicação">Comunicação</option>
+                                    <option value="Segurança do trabalho">Segurança do Trabalho</option>
+                                    <option value="Sustentabilidade">Sustentabilidade</option>
+                                    <option value="Expedição">Expedição</option>
                                 </NativeSelectField>
                             </NativeSelectRoot>
                             <Field.ErrorText fontSize="0.9rem">{setorError}</Field.ErrorText>
@@ -195,26 +195,26 @@ const LoginPage = () => {
                             <Field.Label className="input-label">Cargo</Field.Label>
                             <NativeSelectRoot>
                                 <NativeSelectField className="input" placeholder="Selecione o cargo" onChange={(e) => setCargo(e.target.value)}>
-                                <option value="estagiario">Estagiário</option>
-                                <option value="assistente_administrativo">Assistente Administrativo</option>
-                                <option value="analista_financeiro">Analista Financeiro</option>
-                                <option value="analista_de_sistemas">Analista de Sistemas</option>
-                                <option value="engenheiro_de_software">Engenheiro de Software</option>
-                                <option value="coordenador_de_projetos">Coordenador de Projetos</option>
-                                <option value="gerente_de_marketing">Gerente de Marketing</option>
-                                <option value="supervisor_de_vendas">Supervisor de Vendas</option>
-                                <option value="diretor_financeiro">Diretor Financeiro</option>
-                                <option value="presidente">Presidente</option>
-                                <option value="tecnico_de_suporte">Técnico de Suporte</option>
-                                <option value="analista_de_rh">Analista de RH</option>
-                                <option value="designer_grafico">Designer Gráfico</option>
-                                <option value="desenvolvedor_frontend">Desenvolvedor Frontend</option>
-                                <option value="desenvolvedor_backend">Desenvolvedor Backend</option>
-                                <option value="arquiteto_de_solucoes">Arquiteto de Soluções</option>
-                                <option value="analista_de_dados">Analista de Dados</option>
-                                <option value="cientista_de_dados">Cientista de Dados</option>
-                                <option value="coordenador_de_ti">Coordenador de TI</option>
-                                <option value="chefe_de_operacoes">Chefe de Operações</option>
+                                <option value="Estagiário">Estagiário</option>
+                                <option value="Assistente administrativo">Assistente Administrativo</option>
+                                <option value="Analista financeiro">Analista Financeiro</option>
+                                <option value="Analista de sistemas">Analista de Sistemas</option>
+                                <option value="Engenheiro de software">Engenheiro de Software</option>
+                                <option value="Coordenador de projetos">Coordenador de Projetos</option>
+                                <option value="Gerente de marketing">Gerente de Marketing</option>
+                                <option value="Supervisor de vendas">Supervisor de Vendas</option>
+                                <option value="Diretor financeiro">Diretor Financeiro</option>
+                                <option value="Presidente">Presidente</option>
+                                <option value="Técnico de suporte">Técnico de Suporte</option>
+                                <option value="Analista de rh">Analista de RH</option>
+                                <option value="Designer gráfico">Designer Gráfico</option>
+                                <option value="Desenvolvedor frontend">Desenvolvedor Frontend</option>
+                                <option value="Desenvolvedor backend">Desenvolvedor Backend</option>
+                                <option value="Arquiteto de soluções">Arquiteto de Soluções</option>
+                                <option value="Analista de dados">Analista de Dados</option>
+                                <option value="Cientista de dados">Cientista de Dados</option>
+                                <option value="Coordenador de ti">Coordenador de TI</option>
+                                <option value="Chefe de operações">Chefe de Operações</option>
                                 </NativeSelectField>
                             </NativeSelectRoot>
                             <Field.ErrorText fontSize="0.9rem">{cargoError}</Field.ErrorText>
