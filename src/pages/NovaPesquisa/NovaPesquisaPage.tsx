@@ -1,6 +1,6 @@
 import React, {useEffect, useState } from 'react';
-import {Table } from "@chakra-ui/react"
-import { MdArrowBackIos } from "react-icons/md";
+import {Table, Button } from "@chakra-ui/react"
+import { MdArrowBackIos, MdOutlineCheck } from "react-icons/md";
 import { useNavigate} from "react-router-dom";
 import Pagecontainer from "@/components/props/PageContainerProps"
 import Expandable from "@/components/Expandable/ExpandableSection"
@@ -8,149 +8,171 @@ import PopupNovaPergunta from "@/components/Popup/NovaPergunta/PopupNovaPergunta
 import PopupAdicionarColaborador from "@/components/Popup/AdicionarColaborador/PopupAdicionarColaborador"
 import PopupEditarPergunta from "@/components/Popup/EditarPergunta/PopupEditarPergunta"
 import Pergunta from "@/components/Pergunta/Pergunta"
+import AvisoVazio from "@/components/AvisoVazio/AvisoVazio"
 import "./NovaPesquisaPage.scss";
-import { PerguntaData } from '@/types';
-import { AllUsuariosResponse } from '../../types/usuario.types';
-import usuarioService from '../../services/usuariosService';
+import pesquisaService from '../../services/pesquisaService';
+import { ErrorResponse } from '../../types/error.types';
+import { AxiosError } from 'axios';
+import {PerguntaRequest} from '@/types/pesquisa.types';
+import { AllUsuariosResponse } from '@/types/usuario.types';
 
-interface State {
-  usuarios: AllUsuariosResponse[];
-}
+
 
 const UsuariosPage = () => {
     const [isPopupOpenAddUser, setisPopupOpenAddUser] = useState(false);
     const [isPopupOpenAddPerguntas, setisPopupOpenAddPerguntas] = useState(false);
     const [isPopupOpenEditarPerguntas, setisPopupOpenEditarPerguntas] = useState(false);
-    const [perguntaSelecionada, setPerguntaSelecionada] = useState<PerguntaData | null>(null);
+    const [perguntaSelecionada, setPerguntaSelecionada] = useState<PerguntaRequest | null>(null);
+    const [colaboradoresSelecionados, setColaboradoresSelecionados] = useState<AllUsuariosResponse[] | []>([]);
     const navigate = useNavigate();
 
-    const [state, setState] = useState<State>({
-            usuarios: []
-        });
-    
-        const buscarUsuarios = async () => {
-            setState((prev) => ({ ...prev, loading: true, error: null }));
-    
-            const data = await usuarioService.getAllUsers();
-            setState({ usuarios: data});
-        };
-    
-        useEffect(() => {
-            buscarUsuarios();
-        }, []);
-    
-        const { usuarios} = state;
+    const [localPerguntas, setlocalPerguntas] = useState<PerguntaRequest[]>([]);
 
-    const [mockUsuarios, setUsuarios] = useState([
-        { id: "1234", nome: "Ana Luiza", email: "15/10/2025", respondidos:'20', total:'35', select: false},
-        { id: "5678", nome: "Carlos Eduardo", email: "03/03/2025", respondidos:'11', total:'15', select: false},
-        { id: "9123", nome: "Carolina Santos", email: "24/06/2025", respondidos:'39', total:'45', select: false},
-    ]);
+    const handleAddPergunta = (novaPergunta: PerguntaRequest) => {
+        novaPergunta.id = localPerguntas.length + 1;
+        setlocalPerguntas(prevPerguntas => [...prevPerguntas, novaPergunta])
+        setisPopupOpenAddPerguntas(false); 
+    };
 
-    
-        const [mockPerguntas, setMockPerguntas] = useState<PerguntaData[]>([
-        {
-            id: 1,
-            titulo: "Como você avalia o ambiente de trabalho da empresa?",
-            tipo: "descritiva",
-        },
-        {   
-            id: 2,
-            titulo: "Qual seu nível de satisfação com a liderança?",
-            tipo: "escala",
-            escalaAdjetivo: "Satisfeito"
-        },
-        {
-            id: 3,
-            titulo: "Quais benefícios você mais valoriza?",
-            tipo: "opcoes",
-            opcoes: [
-            "Vale alimentação",
-            "Plano de saúde",
-            "Home office",
-            "Vale transporte",
-            "Auxílio creche"
-            ],
-            multiplesEscolhas: true,
-        },
-        ]);
+    const handleEditPergunta = (pergunta: PerguntaRequest) => {
+        setPerguntaSelecionada(pergunta);
+        setisPopupOpenEditarPerguntas(true);
+    };
 
-    const handleCheckboxChange = (id) => {
-        setUsuarios(prevUsuarios => 
-            prevUsuarios.map(usuario => 
-                usuario.id === id 
-                    ? { ...usuario, select: !usuario.select }
-                    : usuario
-            )
+    const handleSaveEdit = (perguntaEditada: PerguntaRequest) => {
+        setlocalPerguntas(prev => 
+            prev.map(p => p.id === perguntaEditada.id ? perguntaEditada : p)
         );
     };
 
-    const handleAddPergunta = (novaPergunta: PerguntaData) => {
-            setMockPerguntas(prevPerguntas => [...prevPerguntas, novaPergunta]);
-            setisPopupOpenAddPerguntas(false); 
-        };
-    
-        const handleEditPergunta = (pergunta: PerguntaData) => {
-            setPerguntaSelecionada(pergunta);
-            setisPopupOpenEditarPerguntas(true);
-        };
-    
-        const handleSaveEdit = (perguntaEditada: PerguntaData) => {
-            setMockPerguntas(prev => 
-                prev.map(p => p.id === perguntaEditada.id ? perguntaEditada : p)
+    const handleRemovePergunta = (id: number) => {
+        setlocalPerguntas(prev => prev.filter(p => p.id !== id));
+    };
+
+    const handleAdicionarColaboradores = (novosColaboradores: AllUsuariosResponse[]) => {
+        setColaboradoresSelecionados(prev => {
+            const atualizados = [...(prev || []), ...novosColaboradores];
+            const unicos = atualizados.filter(
+            (colab, index, self) =>
+                index === self.findIndex((c) => c.id === colab.id)
             );
-        };
-    
-        const handleRemovePergunta = (id: number) => {
-            setMockPerguntas(prev => prev.filter(p => p.id !== id));
-        };
+
+            return unicos;
+        });
+
+        setisPopupOpenAddUser(false);
+    };
+
+
+    const [isLoading, setIsLoading] = useState(false);
+    const handleSavePesquisa = async () => {
+        if (isLoading) return;
+
+        setIsLoading(true);
+        try {
+            const pesquisa = await pesquisaService.createPesquisa();
+            try {
+                const ids = colaboradoresSelecionados.map((colab: { id: number }) => colab.id);
+                await pesquisaService.adiconarColaboradores(ids, pesquisa.idPesquisa);
+            } catch (err) {
+                const axiosError = err as AxiosError<ErrorResponse>;
+                const errorMessage = 
+                    axiosError.response?.data?.message || 
+                    'Erro ao adicionar novo colaborador.';
+                console.error('Erro:', err);
+            }
+
+            try {
+                await Promise.all(
+                localPerguntas.map(async (p) => {
+                    p.pesquisaId = pesquisa.idPesquisa;
+                    await pesquisaService.createPergunta(p);
+                })
+                );
+
+            } catch (err) {
+                const axiosError = err as AxiosError<ErrorResponse>;
+                const errorMessage = 
+                    axiosError.response?.data?.message || 
+                    'Erro ao adicionar nova pergunta.';
+                console.error('Erro:', err);
+            }
+
+            navigate('/home')
+        } catch (err) {
+            const axiosError = err as AxiosError<ErrorResponse>;
+            const errorMessage = 
+                axiosError.response?.data?.message || 
+                'Erro ao adicionar nova pesquisa.';
+            console.error('Erro:', err);
+        } finally {
+            setIsLoading(false); 
+        }
+
+    };
 
     return (
         <Pagecontainer>
             <div className="header">
-                <div className='title-header'>
-                    <MdArrowBackIos className='arrowBack' onClick={() => navigate('/home')}/>
-                    <h2 className="page-title">Nova pesquisa</h2>
+                <div className='content-header'>
+                    <div className='title-header'>
+                        <MdArrowBackIos className='arrowBack' onClick={() => navigate('/home')}/>
+                        <h2 className="page-title">Nova pesquisa</h2>
+                    </div>
+                    <Button className='btn-finalizar' onClick={() => handleSavePesquisa()}>
+                        <MdOutlineCheck/>
+                        Adicionar
+                    </Button>
                 </div>
             </div>
 
             <div className='body'> 
                 <Expandable title="Perguntas"  defaultExpanded={false} contentButton="Nova pergunta" onButtonAdd={() => setisPopupOpenAddPerguntas(true)} buttonVisible={true}>
-                    {mockPerguntas.map((pergunta)=>(
-                        <Pergunta 
+                    {localPerguntas.map((pergunta)=>(
+                        <Pergunta
+                            key={pergunta.id} 
                             pergunta={pergunta as any} 
                             onEdit={(pergunta) => handleEditPergunta(pergunta)}
                             defaultExpanded={false}
                         />
                     ))} 
+                    {localPerguntas.length == 0 && (
+                        <AvisoVazio nenhum="nenhuma pergunta" adicionar={true} instrucao= "Adicione novas perguntas a pequisa" botao="Nova pergunta"/>
+                    )}
                 </Expandable>
 
                 <Expandable title="Colaboradores"  contentButton="Novo colaborador" onButtonAdd={() => setisPopupOpenAddUser(true)} buttonVisible={true}>
-                    <div className='table-user'>
-                        <Table.Root className="table-user-element">
-                            <Table.Header className="table-header">
-                                <Table.Row>
-                                <Table.ColumnHeader textAlign="left">Nome Completo</Table.ColumnHeader>
-                                <Table.ColumnHeader textAlign="center">Gênero</Table.ColumnHeader>
-                                <Table.ColumnHeader textAlign="center">Setor</Table.ColumnHeader>
-                                <Table.ColumnHeader textAlign="center">Cargo</Table.ColumnHeader>
-                                <Table.ColumnHeader textAlign="center">Tempo de casa</Table.ColumnHeader>
-                                </Table.Row>
-                            </Table.Header>
+                    {colaboradoresSelecionados.length != 0 && (
+                        <div className='table-user'>
+                            <Table.Root className="table-user-element">
+                                <Table.Header className="table-header">
+                                    <Table.Row>
+                                    <Table.ColumnHeader textAlign="left">Nome Completo</Table.ColumnHeader>
+                                    <Table.ColumnHeader textAlign="center">Gênero</Table.ColumnHeader>
+                                    <Table.ColumnHeader textAlign="center">Setor</Table.ColumnHeader>
+                                    <Table.ColumnHeader textAlign="center">Cargo</Table.ColumnHeader>
+                                    <Table.ColumnHeader textAlign="center">Tempo de casa</Table.ColumnHeader>
+                                    </Table.Row>
+                                </Table.Header>
 
-                            <Table.Body className="table-body">
-                                {mockUsuarios.map((item) => (
-                                <Table.Row key={item.id}>
-                                    <Table.Cell textAlign="left">{item.nome}</Table.Cell>
-                                    <Table.Cell textAlign="center">{item.email}</Table.Cell>
-                                    <Table.Cell textAlign="center">{item.total}</Table.Cell>
-                                    <Table.Cell textAlign="center">{item.email}</Table.Cell>
-                                    <Table.Cell textAlign="center">{item.total}</Table.Cell>
-                                </Table.Row>
-                                ))}
-                            </Table.Body>
-                        </Table.Root>
-                    </div>
+                                <Table.Body className="table-body">
+                                    {colaboradoresSelecionados.map((item) => (
+                                    <Table.Row key={item.id}>
+                                        <Table.Cell textAlign="left">{item.nome}</Table.Cell>
+                                        <Table.Cell textAlign="center">{item.genero}</Table.Cell>
+                                        <Table.Cell textAlign="center">{item.setor}</Table.Cell>
+                                        <Table.Cell textAlign="center">{item.cargo}</Table.Cell>
+                                        <Table.Cell textAlign="center">{item.tempoDeCasa}</Table.Cell>
+                                    </Table.Row>
+                                    ))}
+                                </Table.Body>
+                            </Table.Root>
+                        </div>
+                    )}
+
+                    {colaboradoresSelecionados.length == 0 && (
+                        <AvisoVazio nenhum="nenhum colaborador" adicionar={true} instrucao= "Adicione novos colaboradores a pequisa" botao="Novo colaborador"/>
+                    )}
                 </Expandable>
             </div>
 
@@ -163,6 +185,7 @@ const UsuariosPage = () => {
             <PopupAdicionarColaborador
                 isOpen={isPopupOpenAddUser}
                 onClose={() => setisPopupOpenAddUser(false)}
+                onSubimt={(colaboradores) => handleAdicionarColaboradores(colaboradores)}
             />
 
             {perguntaSelecionada && (

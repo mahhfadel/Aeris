@@ -3,18 +3,18 @@ import { useNavigate } from "react-router-dom";
 import "./Pesquisa.scss";
 
 interface Pesquisa {
-    id: string;
+    id: number;
     nome: string;
-    data: string;
-    resposta: string;
-    pessoas: string;
+    dataInicio: string;
+    dataFim: string;
+    resposta: number;
+    pessoas: number;
 }
 
-const Pesquisa: React.FC<Pesquisa> = ({id, nome, data, resposta, pessoas}) => {
+const Pesquisa: React.FC<Pesquisa> = ({id, nome, dataInicio, dataFim, resposta, pessoas}) => {
     const navigate = useNavigate();
 
     const handleClick = () => {
-        console.log(id);
         navigate(`/gerenciar-pesquisa?id=${id}`);
     };
 
@@ -22,7 +22,7 @@ const Pesquisa: React.FC<Pesquisa> = ({id, nome, data, resposta, pessoas}) => {
     <div className="pesquisa-card" onClick={handleClick}>
       <div className="pesquisa-info">
         <h3 className="pesquisa-nome">{nome}</h3>
-        <p className="pesquisa-data">{data}</p>
+        <p className="pesquisa-data">{dataInicio} - {dataFim}</p>
       </div>
       <div className="respostas">
         <p className="resposta-title">Respostas</p>

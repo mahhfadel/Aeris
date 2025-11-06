@@ -13,9 +13,11 @@ interface State {
 interface PopupProps {
   isOpen: boolean;
   onClose: () => void;
+  onSubimt: (usuarios: AllUsuariosResponse[]) => void;
+  idPesquisa?: number;
 }
 
-const PopupNovaPergunta: React.FC<PopupProps> = ({ isOpen, onClose }) => {
+const PopupNovaPergunta: React.FC<PopupProps> = ({ isOpen, onClose, onSubimt, idPesquisa }) => {
   if (!isOpen) return null;
 
   const [state, setState] = useState<State>({ usuarios: [] });
@@ -24,7 +26,7 @@ const PopupNovaPergunta: React.FC<PopupProps> = ({ isOpen, onClose }) => {
 
   const buscarUsuarios = async () => {
     try {
-      const data = await usuarioService.getAllUsers();
+      const data = await usuarioService.getAllUsers(idPesquisa);
       setState({ usuarios: data });
     } catch (error) {
       console.error("Erro ao buscar usuários", error);
@@ -52,14 +54,12 @@ const PopupNovaPergunta: React.FC<PopupProps> = ({ isOpen, onClose }) => {
   const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      console.log("Pesquisa realizada:", search);
     }
   };
 
   const handleSubmitAddUsers = () => {
     const usuariosSelecionados = usuarios.filter(u => selectedIds.has(u.id));
-    console.log('Usuários selecionados:', usuariosSelecionados);
-    onClose();
+    onSubimt(usuariosSelecionados);
   };
 
   return (
@@ -73,7 +73,7 @@ const PopupNovaPergunta: React.FC<PopupProps> = ({ isOpen, onClose }) => {
               placeholder="Pesquisar colaborador"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              onKeyDown={handleSearchKeyDown} // 🔍 busca com Enter
+              onKeyDown={handleSearchKeyDown}
             />
           </InputGroup>
         </div>

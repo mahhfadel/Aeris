@@ -10,6 +10,7 @@ import Popup from "@/components/Popup/Popup";
 import DialogPopup from "@/components/Popup/DialogPopup"
 import "./UsuariosPage.scss";
 import { AxiosError } from 'axios';
+import AvisoVazio from "@/components/AvisoVazio/AvisoVazio"
 
 interface State {
   usuarios: AllUsuariosResponse[];
@@ -120,6 +121,10 @@ const UsuariosPage = () => {
                 {usuarios.map((usuario) => (
                     <Usuarios key={usuario.id} id={usuario.id} nome={usuario.nome} email={usuario.email} respondidos={usuario.respondidos} total={usuario.total}/>
                 ))}
+
+                {usuarios.length == 0 && (
+                    <AvisoVazio nenhum="nenhum usuário" adicionar={true} instrucao= "Adicione novos usuários a plataforma" botao="Novo colaborador"/>
+                )}
             </div>
 
             <Popup

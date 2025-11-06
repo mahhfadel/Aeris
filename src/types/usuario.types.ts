@@ -37,6 +37,7 @@ export interface AllUsuariosResponse {
   tempoDeCasa: string;
   respondidos: number;
   total: number;
+  mensagem: string;
 }
 
 export interface DadosPessoaisRequest{

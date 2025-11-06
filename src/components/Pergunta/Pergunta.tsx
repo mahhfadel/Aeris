@@ -1,8 +1,15 @@
 import React, { useState } from 'react';
 import { MdEdit, MdKeyboardArrowDown, MdKeyboardArrowUp } from 'react-icons/md';
+import {PerguntaRequest, PerguntaResponse} from '@/types/pesquisa.types';
 import './Pergunta.scss';
 
-import {PerguntaProps} from '@/types';
+interface PerguntaProps {
+  pergunta: PerguntaResponse;
+  onEdit?: (pergunta: PerguntaRequest) => void;
+  onRemove?: (id: number) => void;
+  defaultExpanded?: boolean;
+}
+
 
 const Pergunta: React.FC<PerguntaProps> = ({ 
   pergunta,
@@ -17,13 +24,13 @@ const Pergunta: React.FC<PerguntaProps> = ({
       escala: 'Escala',
       opcoes: 'Opções'
     };
-    return labels[pergunta.tipo];
+    return labels[pergunta.tipoPergunta.descricao];
   };
 
   const renderContent = () => {
     if (!isExpanded) return null;
 
-    switch(pergunta.tipo) {
+    switch(pergunta.tipoPergunta.descricao) {
       case 'descritiva':
         return (
           <div className="pergunta-content">
@@ -36,23 +43,23 @@ const Pergunta: React.FC<PerguntaProps> = ({
           <div className="pergunta-content">
             <div className="escala-options">
                 <div key={1} className="escala-tag">
-                  Pouquíssimo {pergunta.escalaAdjetivo}
+                  Pouquíssimo {pergunta.adjetivo}
                 </div>
 
                 <div key={2} className="escala-tag">
-                  Pouco {pergunta.escalaAdjetivo}
+                  Pouco {pergunta.adjetivo}
                 </div>
 
                 <div key={3} className="escala-tag">
-                  {pergunta.escalaAdjetivo}
+                  {pergunta.adjetivo}
                 </div>
 
                 <div key={4} className="escala-tag">
-                  Muito {pergunta.escalaAdjetivo}
+                  Muito {pergunta.adjetivo}
                 </div>
 
                 <div key={5} className="escala-tag">
-                  Muitíssimo {pergunta.escalaAdjetivo}
+                  Muitíssimo {pergunta.adjetivo}
                 </div>
             </div>
           </div>
@@ -62,9 +69,9 @@ const Pergunta: React.FC<PerguntaProps> = ({
         return (
           <div className="pergunta-content">
             <div className="opcoes-list">
-              {pergunta.opcoes.map((opcao, index) => (
+              {pergunta.tipoPergunta.opcoes.map((opcao, index) => (
                 <div key={index} className="opcao-tag">
-                  {opcao}
+                  {opcao.descricao}
                 </div>
               ))}
             </div>
@@ -79,7 +86,7 @@ const Pergunta: React.FC<PerguntaProps> = ({
   return (
     <div className={`pergunta ${isExpanded ? 'expanded' : ''}`}>
       <div className="pergunta-header" onClick={() => setIsExpanded(!isExpanded)}>
-        <h3 className="pergunta-titulo">{pergunta.titulo}</h3>
+        <h3 className="pergunta-titulo">{pergunta.pergunta}</h3>
         <div className="pergunta-actions">
           <span className="pergunta-tipo">{renderTipoLabel()}</span>
           {isExpanded ? (
@@ -97,7 +104,14 @@ const Pergunta: React.FC<PerguntaProps> = ({
           className="edit-btn"
           onClick={(e) => {
             e.stopPropagation();
-            onEdit?.(pergunta);
+            onEdit?.({
+              pergunta: pergunta.pergunta,
+              adjetivo: pergunta.adjetivo,
+              tipoPergunta: pergunta.tipoPergunta.descricao,
+              opcoes: pergunta.tipoPergunta.opcoes ,
+              id: pergunta.id,
+
+            });
           }}
         >
           <MdEdit />

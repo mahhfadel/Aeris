@@ -3,13 +3,13 @@ import Popup from "@/components/Popup/Popup";
 import {Button, Input, NativeSelectRoot, NativeSelectField, Field, Group } from "@chakra-ui/react"
 import { MdClose  } from "react-icons/md";
 import "./PopupEditarPergunta.scss";
-import {PerguntaData} from '@/types';
+import {PerguntaRequest, OpcoesRequest} from '@/types/pesquisa.types'
 
 interface PopupProps {
   isOpen: boolean;
   onClose: () => void;
-  pergunta: PerguntaData;
-  onEdit: (pergunta: PerguntaData) => void;
+  pergunta: PerguntaRequest;
+  onEdit: (pergunta: PerguntaRequest) => void;
   onRemove: (id: number) => void;
 }
 
@@ -20,28 +20,28 @@ const PopupEditarPergunta: React.FC<PopupProps> = ({
   onEdit,
   onRemove 
 }) => {
-  const [tipoPergunta, setTipoPergunta] = useState<'descritiva' | 'escala' | 'opcoes'>('descritiva');
+  const [tipoPergunta, setTipoPergunta] = useState('');
   const [titulo, setTitulo] = useState('');
   const [escalaAdjetivo, setEscalaAdjetivo] = useState('');
-  const [opcoes, setOpcoes] = useState<string[]>([]);
-  const [novaOpcao, setNovaOpcao] = useState('');
-  const [multiplesEscolhas, setMultiplesEscolhas] = useState(false);
+  const [opcoes, setOpcoes] = useState<OpcoesRequest[]>([]);
+  const [novaOpcao, setNovaOpcao] = useState<OpcoesRequest>({
+    descricao: "", 
+  });
   const [tituloError, setTituloError] = useState('');
   const [opcoesError, setOpcoesError] = useState('');
   const [escalaError, setEscalaError] = useState('');
 
   useEffect(() => {
     if (isOpen && pergunta) {
-      setTipoPergunta(pergunta.tipo);
-      setTitulo(pergunta.titulo);
+      setTipoPergunta(pergunta.tipoPergunta);
+      setTitulo(pergunta.pergunta);
       
-      if (pergunta.tipo === 'escala' && pergunta.escalaAdjetivo) {
-        setEscalaAdjetivo(pergunta.escalaAdjetivo);
+      if (pergunta.tipoPergunta === 'escala' && pergunta.adjetivo) {
+        setEscalaAdjetivo(pergunta.adjetivo);
       }
       
-      if (pergunta.tipo === 'opcoes') {
+      if (pergunta.tipoPergunta === 'opcoes') {
         setOpcoes(pergunta.opcoes || []);
-        setMultiplesEscolhas(pergunta.multiplesEscolhas || false);
       }
     }
   }, [isOpen, pergunta]);
@@ -53,18 +53,20 @@ const PopupEditarPergunta: React.FC<PopupProps> = ({
   }, [isOpen]);
 
   const handleAddOpcao = () => {
-    if (!novaOpcao.trim()) {
+    if (!novaOpcao.descricao.trim()) {
       setOpcoesError('Digite uma opção válida');
       return;
     }
     
-    if (opcoes.includes(novaOpcao.trim())) {
+    if (opcoes.includes(novaOpcao)) {
       setOpcoesError('Essa opção já existe');
       return;
     }
 
-    setOpcoes([...opcoes, novaOpcao.trim()]);
-    setNovaOpcao('');
+    setOpcoes([...opcoes, novaOpcao]);
+    setNovaOpcao({
+      descricao: "", 
+    });
     setOpcoesError('');
   };
 
@@ -102,38 +104,15 @@ const PopupEditarPergunta: React.FC<PopupProps> = ({
       return;
     }
 
-    let perguntaEditada: PerguntaData;
+    let perguntaEditada = {} as PerguntaRequest;
+    
+    perguntaEditada.pergunta = titulo;
+    perguntaEditada.adjetivo = escalaAdjetivo;
+    perguntaEditada.tipoPergunta = tipoPergunta;
+    perguntaEditada.opcoes = opcoes;
+    perguntaEditada.id = pergunta.id;
 
-    switch (tipoPergunta) {
-      case 'descritiva':
-        perguntaEditada = {
-          id: pergunta.id, 
-          titulo,
-          tipo: 'descritiva'
-        };
-        break;
-
-      case 'escala':
-        perguntaEditada = {
-          id: pergunta.id,
-          titulo,
-          tipo: 'escala',
-          escalaAdjetivo,
-        };
-        break;
-
-      case 'opcoes':
-        perguntaEditada = {
-          id: pergunta.id,
-          titulo,
-          tipo: 'opcoes',
-          opcoes,
-          multiplesEscolhas
-        };
-        break;
-    }
-
-    onEdit?.(perguntaEditada);
+    onEdit(perguntaEditada);
     onClose();
   };
 
@@ -147,8 +126,9 @@ const PopupEditarPergunta: React.FC<PopupProps> = ({
   const resetForm = () => {
     setTitulo('');
     setEscalaAdjetivo('');
-    setNovaOpcao('');
-    setMultiplesEscolhas(false);
+    setNovaOpcao({
+      descricao: "", 
+    });
     setTituloError('');
     setOpcoesError('');
     setEscalaError('');
@@ -227,9 +207,11 @@ const PopupEditarPergunta: React.FC<PopupProps> = ({
                     width="full"
                     placeholder="Digite uma opção" 
                     className='input'
-                    value={novaOpcao}
+                    value={novaOpcao.descricao}
                     onChange={(e) => {
-                      setNovaOpcao(e.target.value);
+                      setNovaOpcao  ({
+                        descricao: e.target.value, 
+                      });
                       setOpcoesError('');
                     }}
                     onKeyPress={handleKeyPress}
@@ -246,7 +228,7 @@ const PopupEditarPergunta: React.FC<PopupProps> = ({
                   <div className="opcoes-list">
                     {opcoes.map((opcao, index) => (
                       <div key={index} className="opcao-tag">
-                        {opcao} 
+                        {opcao.descricao} 
                         <button
                           type="button"
                           onClick={() => handleRemoveOpcao(index)}

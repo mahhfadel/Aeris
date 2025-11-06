@@ -3,51 +3,38 @@ import Popup from "@/components/Popup/Popup";
 import {Button, Input, NativeSelectRoot, NativeSelectField, Field, Group } from "@chakra-ui/react"
 import { MdClose  } from "react-icons/md";
 import "./PopupNovaPergunta.scss";
-import {PerguntaData} from '@/types';
+import {PerguntaRequest,OpcoesRequest} from '@/types/pesquisa.types';
 
 interface PopupProps {
   isOpen: boolean;
   onClose: () => void;
-  onAdd: (pergunta: PerguntaData) => void;
+  onAdd: (pergunta: PerguntaRequest) => void;
 }
 
 const PopupNovaPergunta: React.FC<PopupProps> = ({ isOpen, onClose, onAdd }) => {
   if (!isOpen) return null;
 
     const [tipoPergunta, setTipoPergunta] = useState<'descritiva' | 'escala' | 'opcoes'>('descritiva');
-    const [titulo, setTitulo] = useState('');
+    const [pergunta, setPergunta] = useState('');
     const [escalaAdjetivo, setEscalaAdjetivo] = useState('');
-    const [opcoes, setOpcoes] = useState<string[]>([]);
+    const [opcoes, setOpcoes] = useState<OpcoesRequest[]>([]);
     const [novaOpcao, setNovaOpcao] = useState('');
-    const [multiplesEscolhas, setMultiplesEscolhas] = useState(false);
-    const [tituloError, setTituloError] = useState('');
+    const [perguntaError, setPerguntaError] = useState('');
     const [opcoesError, setOpcoesError] = useState('');
     const [escalaError, setEscalaError] = useState('');
-
-    type PerguntaTipo = 'descritiva' | 'escala' | 'opcoes';
-
-    interface PerguntaData {
-        id: number;
-        titulo: string;
-        tipo: PerguntaTipo;
-        descricao?: string;
-        escalaAdjetivo?: string;
-        opcoes?: string[];
-        multiplesEscolhas?: boolean;
-    }
 
     const handleAddOpcao = () => {
         if (!novaOpcao.trim()) {
             setOpcoesError('Digite uma opção válida');
             return;
         }
-        
-        if (opcoes.includes(novaOpcao.trim())) {
+
+        if (opcoes.some(opcao => opcao.descricao === novaOpcao)) {
             setOpcoesError('Essa opção já existe');
             return;
         }
 
-        setOpcoes([...opcoes, novaOpcao.trim()]);
+        setOpcoes([...opcoes, { descricao: novaOpcao }]);
         setNovaOpcao('');
         setOpcoesError('');
     };
@@ -66,8 +53,8 @@ const PopupNovaPergunta: React.FC<PopupProps> = ({ isOpen, onClose, onAdd }) => 
     const handleSubmitAddPergunta = (e: React.FormEvent) => {
         e.preventDefault();
     
-        if (!titulo.trim()) {
-            setTituloError('O título da pergunta é obrigatório');
+        if (!pergunta.trim()) {
+            setPerguntaError('O título da pergunta é obrigatório');
             return;
         }
 
@@ -86,47 +73,22 @@ const PopupNovaPergunta: React.FC<PopupProps> = ({ isOpen, onClose, onAdd }) => 
             return;
         }
 
-        let novaPergunta: PerguntaData;
-        const id = Date.now();
+        let novaPergunta = {} as PerguntaRequest;
 
-        switch (tipoPergunta) {
-        case 'descritiva':
-            novaPergunta = {
-            id,
-            titulo,
-            tipo: 'descritiva'
-            };
-            break;
+        novaPergunta.pergunta = pergunta;
+        novaPergunta.adjetivo = escalaAdjetivo;
+        novaPergunta.tipoPergunta = tipoPergunta;
+        novaPergunta.opcoes = opcoes;
 
-        case 'escala':
-            novaPergunta = {
-            id,
-            titulo,
-            tipo: 'escala',
-            escalaAdjetivo,
-            };
-            break;
-
-        case 'opcoes':
-            novaPergunta = {
-            id,
-            titulo,
-            tipo: 'opcoes',
-            opcoes,
-            multiplesEscolhas
-            };
-            break;
-        }
         resetForm();
         onAdd(novaPergunta);
     };
 
     const resetForm = () => {
-        setTitulo('');
+        setPergunta('');
         setEscalaAdjetivo('');
         setNovaOpcao('');
-        setMultiplesEscolhas(false);
-        setTituloError('');
+        setPerguntaError('');
         setOpcoesError('');
         setEscalaError('');
         setOpcoes([]);
@@ -158,7 +120,7 @@ const PopupNovaPergunta: React.FC<PopupProps> = ({ isOpen, onClose, onAdd }) => 
                     </NativeSelectRoot>
                 </div>
 
-                <Field.Root invalid={!!tituloError}>
+                <Field.Root invalid={!!perguntaError}>
                     <Field.Label className='input-label'>
                     Pergunta
                     </Field.Label>
@@ -166,13 +128,13 @@ const PopupNovaPergunta: React.FC<PopupProps> = ({ isOpen, onClose, onAdd }) => 
                     placeholder="Digite a pergunta" 
                     width="full" 
                     className='input' 
-                    value={titulo}
+                    value={pergunta}
                     onChange={(e) => {
-                        setTitulo(e.target.value);
-                        setTituloError('');
+                        setPergunta(e.target.value);
+                        setPerguntaError('');
                     }}
                     />
-                    <Field.ErrorText fontSize="0.9rem">{tituloError}</Field.ErrorText>
+                    <Field.ErrorText fontSize="0.9rem">{perguntaError}</Field.ErrorText>
                 </Field.Root>
 
                 {tipoPergunta === 'escala' && (
@@ -218,7 +180,7 @@ const PopupNovaPergunta: React.FC<PopupProps> = ({ isOpen, onClose, onAdd }) => 
                             <div className="opcoes-list">
                             {opcoes.map((opcao, index) => (
                                 <div key={index} className="opcao-tag">
-                                    {opcao} 
+                                    {opcao.descricao} 
                                     <button
                                         type="button"
                                         onClick={() => handleRemoveOpcao(index)}

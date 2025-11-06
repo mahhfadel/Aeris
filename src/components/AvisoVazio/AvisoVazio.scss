@@ -1,0 +1,29 @@
+@use "@/styles/variables.scss" as *;
+
+.avisoVazio{
+    width: 100%;
+    padding: 16px;
+    display: flex;
+    gap: 0;
+
+    .imagem-vazio{
+        width: 25%;
+        margin-bottom: 12px;
+    }
+
+    h2{
+        color: $blue;
+        font-size: 28px;
+        font-weight: 700;
+    }
+
+    p{
+        color: $gray;
+        font-weight: 500;
+
+        span{
+            color: $blue;
+            font-weight: 700;
+        }
+    }
+}

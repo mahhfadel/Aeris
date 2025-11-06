@@ -1,34 +1,76 @@
 @use "@/styles/variables.scss" as *;
 
 .header{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 24px;
     flex-shrink: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: baseline;
+    margin-bottom: 24px;
 
-    .title-header{
+    p{
+        color: $black;
+        font-size: 18px;
+        font-weight: 500;
+    }
+
+
+
+    .content-header{
         display: flex;
+        justify-content: space-between;
         align-items: center;
-        flex-direction: row;
-        gap: 12px;
+        width: 100%;
+        margin-bottom: 4px;
 
-        .arrowBack {
-            font-size: 24px;
-            cursor: pointer;
-            color: $blue;
+        .title-header{
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            gap: 12px;
+
+            .arrowBack {
+                font-size: 24px;
+                cursor: pointer;
+                color: $blue;
+            }
+
+            h2{
+                font-family: "Aclonica", sans-serif;
+                font-weight: 500;
+                font-style: normal;
+                font-size: 36px;
+                color: $orange;
+                text-align: left; 
+                line-height: 1;
+            }
+
         }
 
-        h2{
-            font-family: "Aclonica", sans-serif;
+        .btn-finalizar{
+            display: flex;
+            align-items: center;
+            background: $orange;
+            padding: 0px 20px;
+            border-radius: 0;
+            border: none;
+            color: $white;
             font-weight: 500;
-            font-style: normal;
-            font-size: 36px;
-            color: $orange;
-            text-align: left; 
-            line-height: 1;
-        }
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-radius: 8px;
 
+            &:hover {
+                
+                background-color: rgba(172, 74, 0, 0.9);
+            }
+
+            svg {
+                color: $white;
+            }
+        }
     }
 }
 

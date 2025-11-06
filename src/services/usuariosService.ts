@@ -7,11 +7,11 @@ export const userApi = getApi('user');
 
 class UsuarioService {
   
-  async getAllUsers(): Promise<AllUsuariosResponse[]> {
+  async getAllUsers(idPesquisa?: number): Promise<AllUsuariosResponse[]> {
     const empresa = authService.getCurrentUser().empresa;
 
     const response = await userApi.get('/user/allUsuario', {
-      params: { empresa: empresa },
+      params: { empresa: empresa, idPesquisa: idPesquisa },
     });
     return response.data;
   }

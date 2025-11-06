@@ -70,6 +70,17 @@
             svg {
                 color: $white;
             }
+
+            &:disabled {
+                background-color: $gray;  /* cor mais clara */
+                color: $black;            /* texto mais apagado */
+                cursor: not-allowed;       /* cursor de proibido */
+                opacity: 0.7;              /* leve transparência */
+
+                svg {
+                    color: $black;
+                }   
+            }
         }
     }
 }
