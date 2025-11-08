@@ -4,7 +4,7 @@ import {PerguntaRequest, PerguntaResponse, PesquisaResponse} from '../types/pesq
 import {AllUsuariosResponse} from '../types/usuario.types'
 import authService from '../services/authService';
 
-export const pesquisaApi = getApi('response');
+export const pesquisaApi = getApi('search');
 
 class PesquisaService {
 

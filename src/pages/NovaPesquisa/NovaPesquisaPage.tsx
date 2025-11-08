@@ -15,6 +15,7 @@ import { ErrorResponse } from '../../types/error.types';
 import { AxiosError } from 'axios';
 import {PerguntaRequest} from '@/types/pesquisa.types';
 import { AllUsuariosResponse } from '@/types/usuario.types';
+import DialogPopup from "@/components/Popup/DialogPopup"
 
 
 
@@ -25,6 +26,9 @@ const UsuariosPage = () => {
     const [perguntaSelecionada, setPerguntaSelecionada] = useState<PerguntaRequest | null>(null);
     const [colaboradoresSelecionados, setColaboradoresSelecionados] = useState<AllUsuariosResponse[] | []>([]);
     const navigate = useNavigate();
+
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const [mensagemPopup, setMensagemPopup] = useState('');
 
     const [localPerguntas, setlocalPerguntas] = useState<PerguntaRequest[]>([]);
 
@@ -69,6 +73,21 @@ const UsuariosPage = () => {
         if (isLoading) return;
 
         setIsLoading(true);
+
+        if(localPerguntas.length < 3){
+            setMensagemPopup("Você precisa adicionar ao menos três pergunta a pesquisa");
+            setIsPopupOpen(true);
+            setIsLoading(false);
+            return;
+        }
+
+        if(colaboradoresSelecionados.length < 3){
+            setMensagemPopup("Você precisa adicionar ao menos três colaboradores a pesquisa");
+            setIsPopupOpen(true);
+            setIsLoading(false);
+            return;
+        }
+
         try {
             const pesquisa = await pesquisaService.createPesquisa();
             try {
@@ -197,6 +216,15 @@ const UsuariosPage = () => {
                     onRemove={handleRemovePergunta} 
                 />
             )}
+
+            <DialogPopup
+                isOpen={isPopupOpen}
+                onClose={() => setIsPopupOpen(false)}
+                viewConfirmaButton={true}
+                onConfirma={() => setIsPopupOpen(false)}
+                viewCancelButton={false}
+                mensagem={mensagemPopup}
+            />
 
         </Pagecontainer>
     );

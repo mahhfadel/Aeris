@@ -43,7 +43,7 @@ const LoginColaboradorPage = () => {
         if (!chave) {
             setChaveError('Insira a chave da pesquisa');
             return
-        } else if (chave.length < 8) {
+        } else if (chave.length < 5) {
             setChaveError('A chave deve conter pelo menos 8 caracteres');
             return
         }
@@ -55,7 +55,7 @@ const LoginColaboradorPage = () => {
                 const respondeuSenso = await usuariosService.respondeuOSenso(response.email);
 
                 if(respondeuSenso.dadosRespondidos){
-                     navigate(`/responder-pesquisa?id=${response.id_pesquisa}`);
+                     navigate(`/responder-pesquisa?id=${response.idPesquisa}`);
                 } else{
                     navigate('/senso')
                 }

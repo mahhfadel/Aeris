@@ -15,7 +15,7 @@ export interface LoginColaboradorResponse {
   token: string;
   nome: string;
   email: string;
-  id_pesquisa: number;
+  idPesquisa: number;
   mensagem: string;
 }
 
