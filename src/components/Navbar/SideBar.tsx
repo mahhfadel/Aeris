@@ -1,7 +1,7 @@
 import React from "react";
 import { VStack, Button, Icon, Box, Image, Spacer } from "@chakra-ui/react";
 import { useNavigate, useLocation} from "react-router-dom";
-import { MdPeopleOutline, MdOutlineSearch, MdOutlineHome, MdOutlineExitToApp} from "react-icons/md"
+import { MdPeopleOutline, MdOutlineHome, MdOutlineExitToApp} from "react-icons/md"
 import authService from '../../services/authService';
 import logo from "@/assets/Aeris.svg";
 import "./SideBar.scss";

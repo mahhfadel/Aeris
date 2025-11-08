@@ -69,8 +69,7 @@ const GerenciarPesquisaPage = () => {
         } catch (err) {
             const axiosError = err as AxiosError<ErrorResponse>;
             const errorMessage = 
-                axiosError.response?.data?.message || 
-                'Erro ao buscar perguntas.';
+                axiosError.response?.data?.message || 'Erro ao buscar perguntas.';
             console.error('Erro:', errorMessage);
         }
     }
@@ -99,7 +98,7 @@ const GerenciarPesquisaPage = () => {
             const errorMessage = 
                 axiosError.response?.data?.message || 
                 'Erro ao adicionar nova pergunta.';
-            console.error('Erro:', err);
+            console.error('Erro:', errorMessage);
         }
     };
 
@@ -118,7 +117,7 @@ const GerenciarPesquisaPage = () => {
             const errorMessage = 
                 axiosError.response?.data?.message || 
                 'Erro ao adicionar nova pergunta.';
-            console.error('Erro:', err);
+            console.error('Erro:', errorMessage);
         }
     };
 
@@ -148,7 +147,7 @@ const GerenciarPesquisaPage = () => {
             const errorMessage = 
                 axiosError.response?.data?.message || 
                 'Erro ao adicionar novo colaborador.';
-            console.error('Erro:', err);
+            console.error('Erro:', errorMessage);
         }
     };
 
@@ -162,7 +161,7 @@ const GerenciarPesquisaPage = () => {
             const errorMessage = 
                 axiosError.response?.data?.message || 
                 'Erro ao adicionar nova pergunta.';
-            console.error('Erro:', err);
+            console.error('Erro:', errorMessage);
         }
     };
 

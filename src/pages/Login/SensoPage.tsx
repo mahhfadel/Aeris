@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState} from 'react';
 import { Field, Input, HStack, Button, Text, Link, NativeSelectRoot, NativeSelectField, Checkbox} from "@chakra-ui/react"
 import logo from '@/assets/Logo.svg';
 import  Popup from "@/components/Popup/Popup";
@@ -84,7 +84,7 @@ const LoginPage = () => {
         }
 
         try {
-            const response = await usuarioService.responderOSenso(identidadeGenero,
+            await usuarioService.responderOSenso(identidadeGenero,
                                                                     dataContratacao,
                                                                     dataNascimento,
                                                                     setor,

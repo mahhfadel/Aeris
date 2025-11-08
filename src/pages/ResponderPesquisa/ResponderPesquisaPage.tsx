@@ -15,7 +15,6 @@ import { AxiosError } from 'axios';
 import { useSearchParams } from "react-router-dom";
 import DialogPopup from "@/components/Popup/DialogPopup"
 
-
 const ResponderPesquisaPage = () => {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();

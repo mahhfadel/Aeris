@@ -4,11 +4,11 @@ import {Button} from "@chakra-ui/react";
 import './ExpandableSection.scss'
 
 interface PopupProps {
-  title: String;
+  title: string;
   children: React.ReactNode;
   defaultExpanded?: boolean;
   buttonVisible: boolean;
-  contentButton?: String;
+  contentButton?: string;
   onButtonAdd?: () => void;
 }
 

@@ -44,7 +44,7 @@ const LoginPage = () => {
         }
 
         try {
-            const response = await authService.login(email, password);
+            await authService.login(email, password);
             navigate('/home');
         } catch (err) {
             const axiosError = err as AxiosError<ErrorResponse>;

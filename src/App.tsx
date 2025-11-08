@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, useLocation } from "react-router-dom";
 import "./styles/global.scss";
 import AppRoutes from "./routes";
 import React from "react";

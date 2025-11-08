@@ -1,4 +1,4 @@
-import React, {useEffect, useState } from 'react';
+import React, {useState } from 'react';
 import {Table, Button } from "@chakra-ui/react"
 import { MdArrowBackIos, MdOutlineCheck } from "react-icons/md";
 import { useNavigate} from "react-router-dom";
@@ -98,7 +98,7 @@ const UsuariosPage = () => {
                 const errorMessage = 
                     axiosError.response?.data?.message || 
                     'Erro ao adicionar novo colaborador.';
-                console.error('Erro:', err);
+                console.error('Erro:', errorMessage);
             }
 
             try {
@@ -114,7 +114,7 @@ const UsuariosPage = () => {
                 const errorMessage = 
                     axiosError.response?.data?.message || 
                     'Erro ao adicionar nova pergunta.';
-                console.error('Erro:', err);
+                console.error('Erro:', errorMessage);
             }
 
             navigate('/home')
@@ -123,7 +123,7 @@ const UsuariosPage = () => {
             const errorMessage = 
                 axiosError.response?.data?.message || 
                 'Erro ao adicionar nova pesquisa.';
-            console.error('Erro:', err);
+            console.error('Erro:', errorMessage);
         } finally {
             setIsLoading(false); 
         }

@@ -119,7 +119,7 @@ const UsuariosPage = () => {
             </div>
             <div className='usuarios-list'>
                 {usuarios.map((usuario) => (
-                    <Usuarios key={usuario.id} id={usuario.id} nome={usuario.nome} email={usuario.email} respondidos={usuario.respondidos} total={usuario.total}/>
+                    <Usuarios key={usuario.id} nome={usuario.nome} email={usuario.email} respondidos={usuario.respondidos} total={usuario.total}/>
                 ))}
 
                 {usuarios.length == 0 && (

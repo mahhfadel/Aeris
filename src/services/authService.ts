@@ -56,9 +56,9 @@ class AuthService {
     }
   }
 
-  async isAdm(): Promise<Boolean> {
+  async isAdm(): Promise<boolean> {
     try {
-      const response = await authApi.get<Boolean>('/auth/isAdm', {
+      const response = await authApi.get<boolean>('/auth/isAdm', {
         params:{token: this.getToken()}
       });
       
