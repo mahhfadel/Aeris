@@ -4,7 +4,7 @@ import { useNavigate, useLocation} from "react-router-dom";
 import { MdPeopleOutline, MdOutlineSearch, MdOutlineHome, MdOutlineExitToApp} from "react-icons/md"
 import authService from '../../services/authService';
 import logo from "@/assets/Aeris.svg";
-import "./Sidebar.scss";
+import "./SideBar.scss";
 
 const Sidebar = () => {
   const navigate = useNavigate();
