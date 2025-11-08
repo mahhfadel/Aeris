@@ -14,7 +14,7 @@ const Sidebar = () => {
 
   const menuItems = [
     { id: "home", label: "Home", icon: MdOutlineHome , path: "/home", activate: ['/home', '/nova-pesquisa', '/gerenciar-pesquisa'].includes(currentPath) },
-    { id: "pesquisas", label: "Pesquisas", icon: MdOutlineSearch, path: "/pesquisas", activate: ['/pesquisas'].includes(currentPath) },
+    // { id: "pesquisas", label: "Pesquisas", icon: MdOutlineSearch, path: "/pesquisas", activate: ['/pesquisas'].includes(currentPath) },
     { id: "usuarios", label: "Usuários", icon: MdPeopleOutline, path: "/usuarios", activate: ['/usuarios'].includes(currentPath) },
   ];
 

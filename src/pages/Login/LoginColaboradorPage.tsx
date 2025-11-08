@@ -43,7 +43,7 @@ const LoginColaboradorPage = () => {
         if (!chave) {
             setChaveError('Insira a chave da pesquisa');
             return
-        } else if (chave.length < 5) {
+        } else if (chave.length < 8) {
             setChaveError('A chave deve conter pelo menos 8 caracteres');
             return
         }

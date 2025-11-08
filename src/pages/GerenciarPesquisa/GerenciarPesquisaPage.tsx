@@ -273,14 +273,14 @@ const GerenciarPesquisaPage = () => {
                     )}
                 </Expandable>
 
-                <Expandable title="Dados Pesquisa" buttonVisible={false}>
+                {/* <Expandable title="Dados Pesquisa" buttonVisible={false}>
                     <AvisoVazio 
                         nenhum="nada por" 
                         adicionar={false} 
                         instrucao="Adicione novos colaboradores à pesquisa" 
                         botao="Novo colaborador"
                     />
-                </Expandable>
+                </Expandable> */}
             </div>
 
             <PopupNovaPergunta
