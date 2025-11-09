@@ -21,13 +21,13 @@ const HomePage = () => {
     });
 
     useEffect(() => {
-        buscarUsuarios();
+        buscarPesquisas();
     }, []);
 
     const { pesquisas} = state;
 
-    const buscarUsuarios = async () => {
-        // setState((prev) => ({ ...prev, loading: true, error: null }));
+    const buscarPesquisas = async () => {
+        setState((prev) => ({ ...prev, loading: true, error: null }));
 
         const data = await pesquisaService.getAllPesquisas();
         setState({ pesquisas: data});

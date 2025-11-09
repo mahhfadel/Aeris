@@ -58,10 +58,7 @@ class AuthService {
 
   async isAdm(): Promise<boolean> {
     try {
-      const response = await authApi.get<boolean>('/auth/isAdm', {
-        params:{token: this.getToken()}
-      });
-      
+      const response = await authApi.get<boolean>('/auth/isAdm');
       return response.data;
     } catch (error) {
       const axiosError = error as AxiosError<{ mensagem: string }>;

@@ -1,18 +1,20 @@
-import { AxiosInstance } from 'axios';
+import axios, { AxiosInstance } from 'axios';
+import { setupInterceptors } from './axios.interceptor';
 import { createApi } from './baseApi';
 import { serviceUrls, ServiceName } from './serviceUrls';
 
 const apiCache: Partial<Record<ServiceName, AxiosInstance>> = {};
+const instances: Record<string, AxiosInstance> = {};
 
 export function getApi(service: ServiceName): AxiosInstance {
   if (apiCache[service]) return apiCache[service]!;
   const baseURL = serviceUrls[service];
   const instance = createApi(baseURL);
+  setupInterceptors(instance);
   apiCache[service] = instance;
   return instance;
 }
 
-// util: forçar atualização (útil em testes ou troca dinâmica)
 export function resetApi(service?: ServiceName) {
   if (service) {
     delete apiCache[service];

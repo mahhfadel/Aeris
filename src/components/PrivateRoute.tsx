@@ -25,7 +25,7 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ children, isAdmRoute }) => 
         const admStatus = await authService.isAdm();
         setIsAdmUser(admStatus);
       } catch (err) {
-        console.error('❌ Erro ao verificar admin:', err);
+        console.error('Erro ao verificar admin:', err);
         setIsAdmUser(false);
       } finally {
         setLoading(false);
