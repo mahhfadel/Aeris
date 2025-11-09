@@ -17,23 +17,23 @@ const HomePage = () => {
     const navigate = useNavigate();
 
     const [state, setState] = useState<State>({
-                pesquisas: []
-            });
-        
-            const buscarUsuarios = async () => {
-                setState((prev) => ({ ...prev, loading: true, error: null }));
-        
-                const data = await pesquisaService.getAllPesquisas();
-                setState({ pesquisas: data});
-            };
-        
-            useEffect(() => {
-                buscarUsuarios();
-            }, []);
-        
-            const { pesquisas} = state;
+        pesquisas: []
+    });
 
+    useEffect(() => {
+        buscarUsuarios();
+    }, []);
 
+    const { pesquisas} = state;
+
+    const buscarUsuarios = async () => {
+        setState((prev) => ({ ...prev, loading: true, error: null }));
+
+        const data = await pesquisaService.getAllPesquisas();
+        setState({ pesquisas: data});
+    };
+        
+    
     return (
         <Pagecontainer>
             <div className="header-home">

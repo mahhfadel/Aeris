@@ -18,10 +18,10 @@ const Sidebar = () => {
     { id: "usuarios", label: "Usuários", icon: MdPeopleOutline, path: "/usuarios", activate: ['/usuarios'].includes(currentPath) },
   ];
 
-  const handleLogout = () => {
-    authService.logout();
-    navigate("/login");
-  };
+  // const handleLogout = () => {
+  //   authService.logout();
+  //   navigate("/login");
+  // };
 
   return (
     <VStack className="sidebar" align="stretch">
@@ -51,7 +51,7 @@ const Sidebar = () => {
           justifyContent="flex-start"
           variant="ghost"
           className="logout-btn"
-          onClick={handleLogout}
+          // onClick={handleLogout}
         >
           <MdOutlineExitToApp />
           Sair
