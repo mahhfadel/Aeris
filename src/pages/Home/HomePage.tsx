@@ -27,7 +27,7 @@ const HomePage = () => {
     const { pesquisas} = state;
 
     const buscarUsuarios = async () => {
-        setState((prev) => ({ ...prev, loading: true, error: null }));
+        // setState((prev) => ({ ...prev, loading: true, error: null }));
 
         const data = await pesquisaService.getAllPesquisas();
         setState({ pesquisas: data});
