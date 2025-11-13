@@ -49,14 +49,14 @@ class UsuarioService {
     }
   }
 
-  async responderOSenso(genero: string, contratado_em: string, data_nascimento: string, setor: string, cargo: string, sexualidade: string, termos_de_uso: boolean): Promise<DadosPessoaisResponse> {
+  async responderOSenso(genero: string, contratadoEm: string, dataNascimento: string, setor: string, cargo: string, sexualidade: string, termos_de_uso: boolean): Promise<DadosPessoaisResponse> {
     try {
       const emailUsuario = authService.getCurrentUser().email;
 
       const response = await userApi.post<DadosPessoaisResponse>('/senso/responder-senso', {
         genero,
-        contratado_em,
-        data_nascimento,
+        contratadoEm,
+        dataNascimento,
         setor,
         cargo,
         sexualidade,

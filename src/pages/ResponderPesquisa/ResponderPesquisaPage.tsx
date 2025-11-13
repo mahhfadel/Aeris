@@ -173,7 +173,7 @@ const ResponderPesquisaPage = () => {
             setLoading(true);
             await responseService.submeterRespostas(respostas);
 
-            setMensagemPopup("Obrigada por responder a {pesquisa.nome}!")
+            setMensagemPopup(`Obrigada por responder a ${pesquisa.nome}!`)
             setIsMessagemPopupOpen(true)
         } catch (err) {
             const axiosError = err as AxiosError<ErrorResponse>;

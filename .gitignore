@@ -25,3 +25,4 @@ coverage
 *.sw?
 .env
 .env.local
+package-lock.json

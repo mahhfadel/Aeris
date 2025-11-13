@@ -16,6 +16,15 @@ import pesquisaService from '../../services/pesquisaService';
 import { useSearchParams } from "react-router-dom";
 import { AxiosError } from 'axios';
 import { ErrorResponse } from '../../types/error.types';
+import PieChartComponent from '@/components/Dashboard/PieChartComponent'
+import SimpleBarChartComponent from '@/components/Dashboard/SimpleBarChartComponent'
+import TableComponent from '@/components/Dashboard/TableComponent'
+import {DashboardResponse} from '@/types/dashboard.types';
+import dashboardService from '@/services/dashboardService';
+
+interface State {
+  dash: DashboardResponse[];
+}
 
 const GerenciarPesquisaPage = () => {
     const [searchParams] = useSearchParams();
@@ -30,6 +39,26 @@ const GerenciarPesquisaPage = () => {
     const [colaboradores, setColaboradores] = useState<AllUsuariosResponse[]>([]);
     const [perguntas, setPerguntas] = useState<PerguntaResponse[]>([]);
     const [loading, setLoading] = useState(true);
+
+    const [state, setState] = useState<State>({
+        dash: []
+    })
+    
+    const buscarDash = async (pesquisaId: number) => {
+        setLoading(true);
+
+        try{
+            const data = await dashboardService.getDashboardPesquisa(pesquisaId);
+            setState({ dash: data});
+        } finally{
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        const id = Number(searchParams.get("id"));
+        buscarDash(id);
+    }, [searchParams]);
 
     useEffect(() => { 
         const fetchPesquisa = async () => {
@@ -272,14 +301,34 @@ const GerenciarPesquisaPage = () => {
                     )}
                 </Expandable>
 
-                {/* <Expandable title="Dados Pesquisa" buttonVisible={false}>
-                    <AvisoVazio 
-                        nenhum="nada por" 
-                        adicionar={false} 
-                        instrucao="Adicione novos colaboradores à pesquisa" 
-                        botao="Novo colaborador"
-                    />
-                </Expandable> */}
+                <Expandable title="Dados Pesquisa" buttonVisible={false}>
+                    {state.dash.length === 0 && (
+                        <AvisoVazio 
+                            nenhum="nada por" 
+                            adicionar={false} 
+                            instrucao="Adicione novos colaboradores à pesquisa" 
+                            botao="Novo colaborador"
+                        />
+                    )}
+
+                    <div className='dashboardPesquisa'>
+                        {state.dash.map((dashItem) => (
+                            <div>
+                                {dashItem.descricao === "descritiva" && (
+                                    <TableComponent data={dashItem} showDescription={false}/>
+                                )}
+
+                                {dashItem.descricao === "escala" && (
+                                    <SimpleBarChartComponent data={dashItem} showLegend={true} showDescription={false}/>
+                                )}
+
+                                {dashItem.descricao === "opcoes" && (
+                                    <PieChartComponent data={dashItem} showLegend={true} showDescription={false}/>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                </Expandable>
             </div>
 
             <PopupNovaPergunta
